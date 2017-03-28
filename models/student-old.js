@@ -2,9 +2,10 @@ var mongoose = require('mongoose');
 
 var studentSchema = mongoose.Schema({
   name: String,
+  program: String,
   archived: Boolean,
-  program: { type: mongoose.Schema.Types.ObjectId, ref: 'Cohort' },
-  notes : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Notes' }]
-}, {strict: false});
+  overview: String,
+  actionSteps: String
+});
 
 module.exports = mongoose.model('Student', studentSchema);

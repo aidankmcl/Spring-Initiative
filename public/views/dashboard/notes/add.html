@@ -1,0 +1,25 @@
+<div class="row">
+  <div id="content-title" class="content">
+    <h1>Add Note</h1>
+  </div>
+  <ul class="note-types">
+  	<li ng-repeat="schema in schemas" 
+        ng-click="refreshNotes(schema)"
+        ng-if="schema.private != true"
+        ng-class="{active: activeType.name == schema.name}">
+        {{ schema.name }}
+    </li>
+  </ul>
+</div>
+
+<div class="row">
+	<form novalidate>
+    <h2>{{ activeSchema.name }}</h2>
+    <div ng-repeat="question in activeSchema.questions">
+      <label>{{ question.name }}<input ng-model="editNote[question.key]" type="{{ question.input }}" placeholder="{{ question.input }}"></label>
+    </div>
+    <button ng-click="createNote(editNote)">Save Note</button>
+  </form>
+</div>
+
+<link href="stylesheets/tabs.css" rel="stylesheet">

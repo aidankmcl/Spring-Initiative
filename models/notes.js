@@ -1,0 +1,8 @@
+var mongoose = require('mongoose');
+var noteSchema = new mongoose.Schema({
+	_student : { type: mongoose.Schema.Types.ObjectId, ref: 'Student' },
+	noteType: String,
+	archived: Boolean
+}, {strict: false});
+
+module.exports = mongoose.model('Notes', noteSchema);

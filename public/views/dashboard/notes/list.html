@@ -1,0 +1,23 @@
+<div class="row">
+  <div id="content-title" class="content">
+    <h1>Note list</h1>
+  </div>
+  <ul class="note-types">
+    <li ng-repeat="schema in schemas" 
+        ng-click="refreshNotes(schema)"
+        ng-if="schema.private != true"
+        ng-class="{active: activeType.name == schema.name}">
+        {{ schema.name }}
+    </li>
+  </ul>
+</div>
+<div class="row">
+  <button ui-sref="index.dashboard.addNote({activeType: activeType, studentID: studentID})">Add note</button>
+	<ul>
+		<li ng-repeat="note in notes">
+			<span ng-repeat="(key, value) in note" ng-show="key[0] != '_'">{{ key }}: {{ value }}<br></span>
+		</li>
+	</ul>
+</div>
+
+<link href="stylesheets/tabs.css" rel="stylesheet">

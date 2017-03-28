@@ -2,9 +2,8 @@ var mongoose = require('mongoose');
 
 var cohortSchema = mongoose.Schema({
   name: String,
-  comment: String,
-  actionSteps: String,
-  date: Date
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }],
+  schools: [{ type: mongoose.Schema.Types.ObjectId, ref: 'School' }]
 });
 
 module.exports = mongoose.model('Cohort', cohortSchema);

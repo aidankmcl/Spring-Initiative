@@ -36,22 +36,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angularjs-slider/2.11.0/rzslider.min.js"></script>
 
     <!-- New Scripts -->
-    <!-- Factories -->
-    <script src="/javascripts/factories/dataFactory.js"></script>
-    <script src="/javascripts/factories/utilityService.js"></script>
-
-    <!-- Controllers -->
-    <script src="/javascripts/controllers/schemaController.js"></script>
-    <script src="/javascripts/controllers/noteController.js"></script>
-    <script src="/javascripts/controllers/studentController.js"></script>
-    <script src="/javascripts/controllers/navbarController.js"></script>
-    <script src="/javascripts/controllers/sidebarController.js"></script>
+    <script src="/javascripts/schemaController.js"></script>
 
     <!-- Old scripts -->
     <script src="/javascripts/loginController.js"></script>
     <script src="/javascripts/indexController.js"></script>
     <script src="/javascripts/d3Controller.js"></script>
-    <!-- <script src="/javascripts/studentControllers.js"></script> -->
+    <script src="/javascripts/studentControllers.js"></script>
     <script src="/javascripts/settingsController.js"></script>
     <script src="/javascripts/cohortController.js"></script>
     <script src="/javascripts/cohortVizController.js"></script>
@@ -61,13 +52,7 @@
   </head>
 
   <body ng-app="springInitiativeApp">
-
-    <div ui-view=""></div>
-    
-    <link href="stylesheets/simple-sidebar.css" rel="stylesheet">
-    <link href="stylesheets/header.css" rel="stylesheet">
-    <link href="stylesheets/button.css" rel="stylesheet">
-    <link href="stylesheets/main.css" rel="stylesheet">
+    <div ui-view></div>
   </body>
 
 </html>
