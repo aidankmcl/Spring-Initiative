@@ -62,7 +62,7 @@ app.post('/api/notes/edit', noteRoutes.POSTeditNote);
 var schemaRoutes = require(path.join(__dirname, './routes/schemaRoutes'));
 app.post('/api/schema/get', schemaRoutes.GETschema);
 app.post('/api/schema/add', schemaRoutes.POSTschema);
-app.post('/api/schema/edit', schemaRoutes.POSTeditSchema);
+app.put('/api/schema/:_id', schemaRoutes.PUTupdateSchema);
 app.delete('/api/schema/:_id', schemaRoutes.DELETEschema);
 
 var studentRoutes = require(path.join(__dirname, './routes/studentRoutes'));

@@ -1,6 +1,6 @@
 
 angular.module('springInitiativeApp')
-  .factory('dataFactory', ['$http', function ($http) {
+  .factory('dataFactory', ['$http', 'utilityService', function ($http, utilityService) {
     var dataFactory = {};
 
     // Student related
@@ -36,7 +36,7 @@ angular.module('springInitiativeApp')
     }
 
     dataFactory.updateSchema = function(scopeSchema) {
-      return $http.post('/api/schema/update', utilityService.sanitizeSchema(scopeSchema));
+      return $http.put('/api/schema/' + scopeSchema._id, utilityService.sanitizeSchema(scopeSchema));
     }
 
     dataFactory.deleteSchema = function(id) {
