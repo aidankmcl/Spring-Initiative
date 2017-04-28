@@ -5,13 +5,18 @@
 	</ul>
 	<h1> {{ newSchema ? "Add New" : "Edit"}} Schema</h1>
 	<form novalidate>
-		<label>Name: <input type="text" ng-model="editSchema.name"></label>
+		<label>Name<input class="form-control" type="text" ng-model="editSchema.name" placeholder="Text"></label>
 		<div ng-repeat="question in editSchema.questions">
-			<input type="text" ng-model="question.name" placeholder="Name">
+			<input type="text" ng-model="question.name" placeholder="Field name">
+			<div ng-if="question.input == 'radio'" ng-init="question.answers = []">
+				<p>Answers: <span ng-repeat="answer in question.answers">{{ answer }}</span></p>
+				<input class="form-control" type="text" ng-model="newAnswer">
+				<button ng-click="question.answers.push(newAnswer); newAnswer = ''">Add Answer</button>
+			</div>
 			<select ng-model="question.input" ng-init="question.input = question.input || 'text'">
 				<option value="text">Text</option>
 				<option value="number">Number</option>
-				<option value="range">Range</option>
+				<option value="radio">Choice</option>
 				<option value="date">Date</option>
 			</select>
 			<button ng-click="editSchema.questions.splice($index, 1)">Remove</button>

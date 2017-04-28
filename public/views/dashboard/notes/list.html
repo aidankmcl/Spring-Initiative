@@ -1,23 +1,40 @@
 <div class="row">
-  <div id="content-title" class="content">
-    <h1>Note list</h1>
+  <div class="col-xs-12">
+    <div id="content-title" class="content">
+      <h1>Note list</h1>
+      <daterange updateFn="getNotes"></daterange>
+    </div>
   </div>
-  <ul class="note-types">
-    <li ng-repeat="schema in schemas" 
-        ng-click="refreshNotes(schema)"
-        ng-if="schema.private != true"
-        ng-class="{active: activeType.name == schema.name}">
+  <div class="col-xs-12">
+    <ul class="note-types" ng-if="activeStudents.length > 1">
+      <li ng-repeat="student in activeStudents"
+          ng-click="setStudent(student)">
+            {{ student.name }}
+          </li>
+    </ul>
+  </div>
+  <div class="col-xs-12">
+    <div ng-repeat="schema in schemas"
+        ng-if="schema.private != true && activeStudents.length > 0" ng-cloak>
+      <h2>
         {{ schema.name }}
-    </li>
-  </ul>
-</div>
-<div class="row">
-  <button ui-sref="index.dashboard.addNote({activeType: activeType, studentID: studentID})">Add note</button>
-	<ul>
-		<li ng-repeat="note in notes">
-			<span ng-repeat="(key, value) in note" ng-show="key[0] != '_'">{{ key }}: {{ value }}<br></span>
-		</li>
-	</ul>
+        <button class="add-note" ng-click="startNote(schema)">
+          <i class="glyphicon glyphicon-pencil fa fa-pencil-square-o"></i>&nbsp;Add note
+        </button>
+      </h2>
+      <table class="table" ng-show="notes[schema.name].length > 0">
+        <tr>
+          <th>Date</th>
+          <th ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
+          capitalize }}</th>
+        </tr>
+        <tr ng-repeat="note in notes[schema.name]">
+          <td>{{ note._id | mongoDate | date }}</td>
+          <td ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ note[field] }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
 
 <link href="stylesheets/tabs.css" rel="stylesheet">

@@ -30,7 +30,6 @@ angular.module('springInitiativeApp')
       }
 
       $scope.updateSchema = function() {
-        console.log($scope.editSchema);
         dataFactory.updateSchema($scope.editSchema).then(function success(res) {
           console.log(res);
         }, utilityService.logErr)

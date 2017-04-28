@@ -1,25 +1,51 @@
 <div class="row">
+  <back>Back</back>
   <div id="content-title" class="content">
     <h1>Add Note</h1>
   </div>
   <ul class="note-types">
   	<li ng-repeat="schema in schemas" 
-        ng-click="refreshNotes(schema)"
+        ng-click="setSchema(schema)"
         ng-if="schema.private != true"
-        ng-class="{active: activeType.name == schema.name}">
+        ng-class="{active: activeSchema.name == schema.name}">
         {{ schema.name }}
     </li>
+  </ul>
+  <ul class="note-types" ng-if="activeStudents.length > 1">
+    <li ng-repeat="student in activeStudents"
+        ng-click="setStudent(student)">
+          {{ student.name }}
+        </li>
   </ul>
 </div>
 
 <div class="row">
-	<form novalidate>
+  <div class="col-xs-12">
     <h2>{{ activeSchema.name }}</h2>
-    <div ng-repeat="question in activeSchema.questions">
-      <label>{{ question.name }}<input ng-model="editNote[question.key]" type="{{ question.input }}" placeholder="{{ question.input }}"></label>
-    </div>
-    <button ng-click="createNote(editNote)">Save Note</button>
-  </form>
+    <form novalidate>
+      <div class="question row" ng-repeat="question in activeSchema.questions">
+        <div class="col-xs-12">
+          <div ng-switch="question.input">
+            <div class="choice" ng-switch-when="radio">
+              <strong>{{ question.name }}</strong><br>
+              <span ng-repeat="answer in question.answers">
+                <label><input type="{{ question.input }}" name="{{ question.key }}" ng-click="selectOption(question, answer)">{{ answer }}</label>
+              </span>
+            </div>
+            <div ng-switch-default>
+              <label>{{ question.name }}<br>
+              <input class="form-control" ng-model="editNote[question.key]" type="{{ question.input }}" placeholder="{{ question.input }}"></label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+          <button class="form-control" ng-click="createNote(editNote, activeStudents[0]._id, activeSchema)">Save Note</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 
 <link href="stylesheets/tabs.css" rel="stylesheet">

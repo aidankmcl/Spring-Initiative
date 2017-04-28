@@ -1,8 +1,16 @@
 ul.note-types
 	padding-left: 0
 	li
-		display: inline
+		display: inline-block
 		cursor: pointer
-		margin: 0 10px
+		margin: 10px
+		border: 1px solid #888
+		padding: 8px 12px
+		&:first-child
+			margin-left: 0
+		&:last-child
+			margin-right: 0
 		&.active
-			color: red
+			background: #41afa5
+			color: white
+			border-color: #41afa5

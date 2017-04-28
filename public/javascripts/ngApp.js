@@ -3,8 +3,7 @@ var springInitiative = angular.module('springInitiativeApp',
                                       ['ui.router','ngAnimate', 'nvd3',
                                       'rzModule', 'ui.bootstrap']);
 
-springInitiative.config(function($stateProvider, $urlRouterProvider,
-  $locationProvider) {
+springInitiative.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $urlRouterProvider.otherwise('/');
 
@@ -40,7 +39,7 @@ springInitiative.config(function($stateProvider, $urlRouterProvider,
   /* Schema view */
   .state('index.dashboard.schemas', {
     url: '/schemas',
-    params: { activeType: null },
+    params: { activeType: {} },
     controller: 'schemaController',
     templateUrl: 'views/dashboard/schema/add.html',
   })
@@ -49,13 +48,13 @@ springInitiative.config(function($stateProvider, $urlRouterProvider,
   .state('index.dashboard.addNote', {
     url: '/notes/add',
     templateUrl: 'views/dashboard/notes/add.html',
-    params: { activeType: null, studentID: null },
+    params: { activeType: {}, activeStudents: [] },
     controller: 'noteController'
   })
   .state('index.dashboard.listNotes', {
     url: '/overview',
     templateUrl: 'views/dashboard/notes/list.html',
-    params: { activeType: null },
+    params: { activeType: {} },
     controller: 'noteController'
   })
 
@@ -63,14 +62,24 @@ springInitiative.config(function($stateProvider, $urlRouterProvider,
   .state('index.dashboard.addStudent', {
     url: '/students/add',
     templateUrl: 'views/dashboard/students/add.html',
-    params: { activeType: null },
+    params: { activeType: {} },
     controller: 'studentController'
   })
   .state('index.dashboard.viewStudent', {
     url: '/students/{studentID}',
     templateUrl: 'views/dashboard/notes/list.html',
-    params: { activeType: null, studentID: null },
+    params: { activeType: {}, activeStudents: [] },
     controller: 'noteController'
+  })
+
+
+  /**************************************
+  *********** Visualization *************
+  **************************************/
+  .state('index.viz', {
+    url: 'visualization',
+    templateUrl: 'views/visualization/index.html',
+    controller: 'vizController'
   })
 
   /* Content views */

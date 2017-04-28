@@ -67,6 +67,7 @@ app.delete('/api/schema/:_id', schemaRoutes.DELETEschema);
 
 var studentRoutes = require(path.join(__dirname, './routes/studentRoutes'));
 app.get('/api/students/:_id', studentRoutes.GETstudent);
+app.delete('/api/students/:_id', studentRoutes.DELETEstudent);
 app.get('/api/students', studentRoutes.GETallStudents);
 app.post('/api/students/add', studentRoutes.POSTstudent);
 // app.get('/api/allStudents', index.GETallStudents);

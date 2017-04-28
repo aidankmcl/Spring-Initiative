@@ -1,17 +1,42 @@
 
 angular.module('springInitiativeApp')
-  .factory('dataFactory', ['$http', 'utilityService', function ($http, utilityService) {
+  .factory('dataFactory', ['$http', '$rootScope', 'utilityService', function ($http, $rootScope, utilityService) {
     var dataFactory = {};
 
     // Student related
+    dataFactory.activeStudents = [];
+    dataFactory.toggleStudent = function(student) {
+      var studentIndex = dataFactory.activeStudents.findIndex(function (activeStudent) {
+        return activeStudent._id == student._id;
+      });
+
+      if (studentIndex > -1) {
+        dataFactory.activeStudents.splice(studentIndex, 1);
+      } else {
+        dataFactory.activeStudents.push(student);
+      }
+
+      $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
+    }
+
+    dataFactory.setStudent = function(student) {
+      dataFactory.activeStudents = [student]
+      $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
+    }
+
     dataFactory.addStudent = function(scopeStudent) {
       var student = angular.copy(scopeStudent);
+      student["created"] = new Date().getTime();
       return $http.post('/api/students/add', angular.toJson(student));
     }
 
     dataFactory.getStudents = function(search) {
       var url = (search.id) ? '/api/students/' + search.id : '/api/students';
-      return $http.get(url)
+      return $http.get(url);
+    }
+
+    dataFactory.deleteStudent = function(id) {
+      return $http.delete('/api/students/' + id);
     }
 
     // Note related
@@ -22,11 +47,31 @@ angular.module('springInitiativeApp')
       return $http.post('/api/notes/add', angular.toJson(note));
     }
 
-    dataFactory.getNotes = function(studentID, noteType) {
-      return $http.get('/api/notes/get?noteType=' + noteType + '&studentID=' + studentID);
+    dataFactory.getNotes = function(activeStudents, activeType, startDate, endDate) {
+      var today = new Date();
+      startDate = startDate || moment().subtract(7, 'days')._d;
+      endDate = endDate || moment()._d;
+
+      var studentIDs = activeStudents.map(function (student) {
+        return student._id
+      });
+
+      var URL = '/api/notes/get';
+      URL += '?noteType=' + activeType + '&studentIDs=' + studentIDs.join(',');
+      URL += '&startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
+      return $http.get(URL);
+    }
+
+    dataFactory.getNoteKeys = function(noteType) {
+      return $http.get('/api/notes/keys?noteType=' + noteType);
     }
 
     // Schema Related
+    dataFactory.activeSchema = {};
+    dataFactory.setSchema = function(schema) {
+      dataFactory.activeSchema = schema;
+      $rootScope.$broadcast('setSchema', schema);
+    }
     dataFactory.addSchema = function(scopeSchema) {
       return $http.post('/api/schema/add', utilityService.sanitizeSchema(scopeSchema));
     }

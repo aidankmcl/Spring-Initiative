@@ -29,5 +29,15 @@ angular.module('springInitiativeApp')
       return angular.toJson(schema);
     }
 
+    utilityService.getKeys = function(notes) {
+      var keys = {};
+      notes.forEach(function(note) {
+        Object.keys(note).forEach(function(key) {
+          keys[key] = key;
+        });
+      })
+      return keys;
+    }
+
     return utilityService;
   }]);

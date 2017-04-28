@@ -18,8 +18,9 @@
     <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!studentsCollapsed">
       <div class="panel-body">
         <ul>
-          <li class="student-item" ng-repeat="student in studentList | filter :searchbar ">
-              <a ui-sref="index.dashboard.viewStudent({ studentID: student._id })">{{ student.name }}</a>
+          <li class="student-item" ng-class="{active: studentIDs.indexOf(student._id) > -1}" ng-repeat="student in studentList | filter :searchbar ">
+              <a ng-click="toggleStudent(student)">{{ student.name }}</a>
+              <button ng-click="deleteStudent(student._id, $index)"><i class="glyphicon glyphicon-remove"></i></button>
           </li>
         </ul>
       </div>

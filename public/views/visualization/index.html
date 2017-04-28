@@ -1,1 +1,6 @@
-<h2>Viz son</h2>
+<!-- <div ui-view></div> -->
+<h1>Field to graph:</h1>
+<select ng-model="dataKey" ng-change="updateGraph()">
+	<option ng-repeat="option in inputOptions" value="{{ option.key }}">{{ option.name }}</option>
+</select>
+<nvd3 options="options" data="graphData" class="with-3d-shadow with-transitions"></nvd3>
