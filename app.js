@@ -19,12 +19,14 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'sass'),
@@ -56,6 +58,7 @@ app.post('/api/register', index.POSTregister);
 
 var noteRoutes = require(path.join(__dirname, './routes/noteRoutes'));
 app.get('/api/notes/get', noteRoutes.GETnotes);
+app.get('/api/notes/get/:id', noteRoutes.GETnote);
 app.post('/api/notes/add', noteRoutes.POSTnote);
 app.post('/api/notes/edit', noteRoutes.POSTeditNote);
 

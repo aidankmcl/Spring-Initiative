@@ -13,7 +13,7 @@
 
   <li>
     <div class="panel-title">
-      <a data-toggle="collapse" ng-click="studentsCollapsed=!studentsCollapsed; archivedCollapsed=false">Current Students <i class="glyphicon" ng-class="{'glyphicon-chevron-down': studentsCollapsed, 'glyphicon-chevron-right': !studentsCollapsed}"></i></a>
+      <a data-toggle="collapse" ng-click="studentsCollapsed=!studentsCollapsed; archivedCollapsed=false" ng-init="studentsCollapsed=true">Current Students <i class="glyphicon" ng-class="{'glyphicon-chevron-down': studentsCollapsed, 'glyphicon-chevron-right': !studentsCollapsed}"></i></a>
     </div>
     <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!studentsCollapsed">
       <div class="panel-body">

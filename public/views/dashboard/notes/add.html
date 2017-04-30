@@ -20,7 +20,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-xs-12" ng-if="activeStudents.length == 1">
     <h2>{{ activeSchema.name }}</h2>
     <form novalidate>
       <div class="question row" ng-repeat="question in activeSchema.questions">
@@ -39,6 +39,16 @@
           </div>
         </div>
       </div>
+      <div>
+        <h3>Attachments</h3>
+        <ul>
+          <li ng-repeat="file in editNote.attachments">
+            <img src="{{ file }}" style="max-width: 300px;">
+          </li>
+        </ul>
+        <input type="file" ng-model="_tempAttachment" accept="image/*" app-filereader/> <button ng-click="addAttachment(_tempAttachment)">Add</button>
+      </div>
+
       <div class="row">
         <div class="col-xs-12 col-sm-6">
           <button class="form-control" ng-click="createNote(editNote, activeStudents[0]._id, activeSchema)">Save Note</button>

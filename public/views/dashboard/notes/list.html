@@ -6,20 +6,25 @@
     </div>
   </div>
   <div class="col-xs-12">
-    <ul class="note-types" ng-if="activeStudents.length > 1">
+    <ul class="note-types" ng-if="activeStudents.length > 0">
       <li ng-repeat="student in activeStudents"
-          ng-click="setStudent(student)">
+          ng-click="setStudent(student)"
+          class="{{ colorScheme[student._id] }}">
             {{ student.name }}
           </li>
     </ul>
   </div>
   <div class="col-xs-12">
     <div ng-repeat="schema in schemas"
-        ng-if="schema.private != true && activeStudents.length > 0" ng-cloak>
+        ng-if="schema.private != true && activeStudents.length > 0"
+        class="schema-group" ng-cloak>
       <h2>
         {{ schema.name }}
         <button class="add-note" ng-click="startNote(schema)">
           <i class="glyphicon glyphicon-pencil fa fa-pencil-square-o"></i>&nbsp;Add note
+        </button>
+        <button class="add-note" ng-click="startNote(schema)">
+          <i class="glyphicon glyphicon-stats"></i>&nbsp;Visualize
         </button>
       </h2>
       <table class="table" ng-show="notes[schema.name].length > 0">
@@ -28,11 +33,12 @@
           <th ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
           capitalize }}</th>
         </tr>
-        <tr ng-repeat="note in notes[schema.name]">
-          <td>{{ note._id | mongoDate | date }}</td>
+        <tr ui-sref="index.dashboard.showNote({note_id: note._id})" ng-repeat="note in notes[schema.name]" class="{{ colorScheme[note.studentID] }}">
+          <td>{{ note._id | mongoDate | date }} &nbsp; <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i></td>
           <td ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ note[field] }}</td>
         </tr>
       </table>
+      <visualization notes="notes" schema="schema"></visualization>
     </div>
   </div>
 </div>

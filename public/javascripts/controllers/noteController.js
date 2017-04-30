@@ -3,11 +3,22 @@ angular.module('springInitiativeApp')
     function($scope, $http, $state, $stateParams, dataFactory, utilityService) {
       $scope.activeSchema = dataFactory.activeSchema;
       $scope.activeStudents = dataFactory.activeStudents;
-      $scope.editNote = {};
+      $scope.editNote = {
+        attachments: []
+      };
       
       $scope.notes = {};
       $scope.noteFields = {};
-      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created"]
+      $scope.colorScheme = {};
+      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "attachments"]
+
+      $scope.showNoteID = $stateParams.note_id || '';
+      if ($scope.showNoteID) {
+        dataFactory.getNote($scope.showNoteID).then(function(res) {
+          $scope.showNote = res.data[0];
+        }, utilityService.logErr);
+      }
+
 
       $scope.$on('setSchema', function(event, schema) {
         $scope.activeSchema = schema;
@@ -24,6 +35,10 @@ angular.module('springInitiativeApp')
           $scope.refreshNotes();
         } else {
           $scope.notes = {}
+        }
+
+        for (var i=0; i<students.length; i++) {
+          $scope.colorScheme[students[i]._id] = "color-" + i;
         }
       });
 
@@ -58,6 +73,11 @@ angular.module('springInitiativeApp')
         $scope.editNote[question.key] = answer;
       }
 
+      $scope.addAttachment = function(attachment) {
+        $scope.editNote.attachments.push(attachment);
+        $scope._tempAttachment = null;
+      }
+
       $scope.createNote = function(item, studentID, activeSchema) {
         dataFactory.addNote(item, studentID, activeSchema.name).then(function success(res) {
           $state.go('index.dashboard.viewStudent', {studentID: $scope.studentID, activeSchema: $scope.activeSchema});
@@ -72,6 +92,10 @@ angular.module('springInitiativeApp')
           $scope.notes[noteType] = res.data.data;
           $scope.noteFields[noteType] = res.data.noteFields;
         }, utilityService.logErr);
+      }
+
+      $scope.logNote = function(note) {
+        console.log(note);
       }
     }
   ]);

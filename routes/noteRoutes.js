@@ -25,6 +25,13 @@ routes.POSTnote = function(req, res, next) {
   });
 }
 
+routes.GETnote = function(req, res, next) {
+   Notes.find({_id: req.params.id}, function(err, note) {
+    if (err) return logErr(err, res);
+    res.json(note);
+  });
+}
+
 routes.GETnotes = function(req, res, next) {
   var search = {
     noteType: req.query.noteType,

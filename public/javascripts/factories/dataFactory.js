@@ -47,6 +47,10 @@ angular.module('springInitiativeApp')
       return $http.post('/api/notes/add', angular.toJson(note));
     }
 
+    dataFactory.getNote = function(id) {
+      return $http.get('/api/notes/get/' + id);
+    }
+
     dataFactory.getNotes = function(activeStudents, activeType, startDate, endDate) {
       var today = new Date();
       startDate = startDate || moment().subtract(7, 'days')._d;

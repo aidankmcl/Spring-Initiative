@@ -52,10 +52,15 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
     controller: 'noteController'
   })
   .state('index.dashboard.listNotes', {
-    url: '/overview',
+    url: '/',
     templateUrl: 'views/dashboard/notes/list.html',
     params: { activeType: {} },
     controller: 'noteController'
+  })
+  .state('index.dashboard.showNote', {
+    url: '/notes/:note_id',
+    templateUrl: 'views/dashboard/notes/view.html',
+    controller: 'noteController',
   })
 
   // Student Views
