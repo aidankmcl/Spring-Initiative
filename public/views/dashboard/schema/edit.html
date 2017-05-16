@@ -1,0 +1,15 @@
+<div class="row">
+  <div id="content-title" class="content">
+    <h1>Edit Schema</h1>
+    <ul>
+    	<li ng-repeat="schema in schemas" ng-click="setSchema(schema)" ng-if="schema.private != true">
+    		{{ schema.name }} <button ng-click="deleteSchema(schema._id)">Delete</button>
+    	</li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+	<h2>Current Schema</h2>
+</div>
+
+<link href="stylesheets/tabs.css" rel="stylesheet">

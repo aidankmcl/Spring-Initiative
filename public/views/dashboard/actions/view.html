@@ -1,0 +1,18 @@
+<div class="row">
+  <back>Back</back>
+  <div id="content-title" class="content">
+    <h1>Action Step</h1>
+  </div>
+</div>
+
+<div class="row">
+  <form id="update-step" novalidate>
+    <label for="description">Description</label>
+    <p id="description">{{ showStep.description }}</p>
+    <label><input type="checkbox" ng-model="showStep.complete"> Complete</label>
+    <textarea ng-model="showStep.result" placeholder="Results of action step..."></textarea>
+    <button class="form-control" ng-click="updateActionStep()">Save</button>
+  </form>
+</div>
+
+<link href="stylesheets/tabs.css" rel="stylesheet">

@@ -1,0 +1,34 @@
+<div class="row">
+	<back>Back</back>
+</div>
+<div class="row">
+	<ul>
+		<li ng-repeat="schema in schemas" ng-click="setSchema(schema)" ng-if="schema.private != true">{{ schema.name }} <button ng-click="deleteSchema(schema._id)">Delete</button></li>
+		<li ng-if="!newSchema"><button ng-click="cleanSlate()">New Schema</button></li>
+	</ul>
+	<h1> {{ newSchema ? "Add New" : "Edit"}} Schema</h1>
+	<form novalidate>
+		<label>Name<input class="form-control" type="text" ng-model="editSchema.name" placeholder="Text"></label>
+		<div ng-repeat="question in editSchema.questions">
+			<input type="text" ng-model="question.name" placeholder="Field name">
+			<div ng-if="question.input == 'radio'" ng-init="question.answers = []">
+				<p>Answers: <span ng-repeat="answer in question.answers">{{ answer }}</span></p>
+				<input class="form-control" type="text" ng-model="newAnswer">
+				<button ng-click="question.answers.push(newAnswer); newAnswer = ''">Add Answer</button>
+			</div>
+			<select ng-model="question.input" ng-init="question.input = question.input || 'text'">
+				<option value="text">Text</option>
+				<option value="number">Number</option>
+				<option value="radio">Choice</option>
+				<option value="date">Date</option>
+			</select>
+			<button ng-click="editSchema.questions.splice($index, 1)">Remove</button>
+		</div>
+		<br>
+		<button ng-click="editSchema.questions.push({})">Add field</button>
+		<button ng-if="!newSchema" ng-click="updateSchema()">Update Schema!</button>
+		<button ng-if="newSchema" ng-click="saveSchema()">Save Schema!</button>
+	</form>
+</div>
+
+<link href="stylesheets/tabs.css" rel="stylesheet">

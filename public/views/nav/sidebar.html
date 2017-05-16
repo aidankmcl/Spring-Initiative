@@ -1,0 +1,46 @@
+<ul class="sidebar-nav">
+  <div class="navbar-form nav" role="search">
+    <div class="input-group">
+      <input  style="border-radius: 5px"  type="search" class="form-control" placeholder="Search" aria-describedby="basic-addon1" ng-model="searchbar">
+    </div>
+  </div>
+
+  <li>
+    <div class="panel-title">
+      <a ng-click="archivedCollapsed=false; studentsCollapsed=false" ui-sref="index.dashboard.addStudent">Add new student <i class="glyphicon glyphicon-plus"></i></a>
+    </div>
+  </li>
+
+  <li>
+    <div class="panel-title">
+      <a data-toggle="collapse" ng-click="studentsCollapsed=!studentsCollapsed; archivedCollapsed=false" ng-init="studentsCollapsed=true">Current Students <i class="glyphicon" ng-class="{'glyphicon-chevron-down': studentsCollapsed, 'glyphicon-chevron-right': !studentsCollapsed}"></i></a>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!studentsCollapsed">
+      <div class="panel-body">
+        <ul>
+          <li class="student-item" ng-class="{active: studentIDs.indexOf(student._id) > -1}" ng-repeat="student in studentList | filter :searchbar ">
+              <a ng-click="toggleStudent(student)">{{ student.name }}</a>
+              <button ng-click="deleteStudent(student._id, $index)"><i class="glyphicon glyphicon-remove"></i></button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+
+  <li>
+    <div class="panel-title">
+      <a data-toggle="collapse" ng-click="archivedCollapsed=!archivedCollapsed; studentsCollapsed=false">Past Students <i class="glyphicon" ng-class="{'glyphicon-chevron-down': archivedCollapsed, 'glyphicon-chevron-right': !archivedCollapsed}"></i></a>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" uib-collapse="!archivedCollapsed">
+      <div class="panel-body">
+        <ul>
+          <div class="student-item" ng-repeat="student in students | filter :searchbar | filter:{archived:true}" ng-click="showStudent(student)" >
+            <li>
+              <a ui-sref=".student.showData" ui-sref-opts="{reload: 'index.student.showData'}">{{student.name}}</a>
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </li>
+</ul>

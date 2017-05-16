@@ -1,0 +1,11 @@
+<back>Back</back>
+<h1>Add Student</h1>
+<form novalidate>
+	<div ng-repeat="question in studentSchema.questions">
+		<label>
+			{{ question.name }}<br>
+			<input class="form-control" type="{{ question.type }}" name="{{ question.key }}" ng-model="newStudent[question.key]">
+		</label>
+	</div>
+	<button ng-click="addStudent()" class="form-control">Add Student</button>
+</form>

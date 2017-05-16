@@ -19,12 +19,14 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(sassMiddleware({
   src: path.join(__dirname, 'sass'),
@@ -35,7 +37,7 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(require('express-session')({
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || "development_secret",
   resave: false,
   saveUninitialized: false
 }));
@@ -53,31 +55,57 @@ app.get('/user', function(req, res, next) {
 app.post('/api/login', index.POSTlogin);
 app.post('/api/logout', index.POSTlogout);
 app.post('/api/register', index.POSTregister);
-app.get('/api/allStudents', index.GETallStudents);
-app.get('/api/student/allEntries', index.GETallStudentEntries);
-app.get('/api/student/:_id', index.GETstudent);
-app.post('/api/student/add', index.POSTaddstudent);
-app.post('/api/student/edit/:_id', index.POSTeditstudent);
-app.delete('/api/student/:_id', index.DELETEstudent);
-app.get('/api/index/archive', index.GETarchive);
-app.get('/api/student/dataList/:_id', index.GETstudentEntriesList);
-app.get('/api/student/data/:_id/:dataType', index.GETstudentEntries);
-app.post('/api/student/newDailyEntry/:_id', index.POSTnewDailyEntry);
-app.post('/api/student/newLongEntry/:_id', index.POSTnewLongEntry);
+
+var noteRoutes = require(path.join(__dirname, './routes/noteRoutes'));
+app.get('/api/notes', noteRoutes.GETnotes);
+app.get('/api/notes/:_id', noteRoutes.GETnote);
+app.post('/api/notes/add', noteRoutes.POSTnote);
+app.post('/api/notes/edit', noteRoutes.POSTeditNote);
+
+var schemaRoutes = require(path.join(__dirname, './routes/schemaRoutes'));
+app.post('/api/schema/get', schemaRoutes.GETschema);
+app.post('/api/schema/add', schemaRoutes.POSTschema);
+app.put('/api/schema/:_id', schemaRoutes.PUTupdateSchema);
+app.delete('/api/schema/:_id', schemaRoutes.DELETEschema);
+
+var actionStepRoutes = require(path.join(__dirname, './routes/actionStepRoutes'));
+app.get('/api/action-steps', actionStepRoutes.GETactionSteps);
+app.get('/api/action-steps/:_id', actionStepRoutes.GETactionStep);
+app.post('/api/action-steps', actionStepRoutes.POSTactionStep);
+app.put('/api/action-steps/:_id', actionStepRoutes.PUTupdateActionStep);
+
+var studentRoutes = require(path.join(__dirname, './routes/studentRoutes'));
+app.get('/api/students/:_id', studentRoutes.GETstudent);
+app.delete('/api/students/:_id', studentRoutes.DELETEstudent);
+app.get('/api/students', studentRoutes.GETallStudents);
+app.post('/api/students/add', studentRoutes.POSTstudent);
+// app.get('/api/allStudents', index.GETallStudents);
+// app.get('/api/student/allEntries', index.GETallStudentEntries);
+// app.get('/api/student/:_id', index.GETstudent);
+// app.post('/api/student/add', index.POSTaddstudent);
+// app.post('/api/student/edit/:_id', index.POSTeditstudent);
+// app.delete('/api/student/:_id', index.DELETEstudent);
+// app.get('/api/index/archive', index.GETarchive);
+// app.get('/api/student/dataList/:_id', index.GETstudentEntriesList);
+// app.get('/api/student/data/:_id/:dataType', index.GETstudentEntries);
+// app.post('/api/student/newDailyEntry/:_id', index.POSTnewDailyEntry);
+// app.post('/api/student/newLongEntry/:_id', index.POSTnewLongEntry);
+
 app.get('/api/allUsers', index.GETallUsers);
 app.post('/api/changeAdmin/:_id', index.POSTchangeAdmin);
 app.post('/api/changePassword/:_id', index.POSTchangePassword);
-app.get('/api/cohort/data/:cohort', index.GETcohortEntries);
 app.delete('/api/delUser/:_id', index.DELETEdelUser);
-app.post('/api/editOverview/', index.POSTeditOverview);
-app.get('/api/overview', index.GEToverview);
+// app.get('/api/cohort/data/:cohort', index.GETcohortEntries);
+// app.post('/api/editOverview/', index.POSTeditOverview);
+
+// app.get('/api/overview', index.GEToverview);
 
 app.use(function(req, res) {
   // Use res.sendfile, as it streams instead of reading the file into memory.
   res.sendFile('main.html', { root: path.join(__dirname, 'views') });
 });
 
-var mongoURI = process.env.MONGO_URI;
+var mongoURI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017";
 mongoose.connect(mongoURI);
 
 var db = mongoose.connection;

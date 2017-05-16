@@ -1,0 +1,15 @@
+<back>Back</back>
+<h1>Add Action Step</h1>
+<form id="action-step-form" novalidate>
+	<textarea ng-model="description" name="description" form="action-step-form" placeholder="Description of Action Step..."></textarea>
+	<div class="students" ng-if="activeStudents.length > 0">
+	  	<p>Students</p>
+	  	<ul class="note-types">
+			<li ng-repeat="student in activeStudents"
+				class="{{ colorScheme[student._id] }}">
+				{{ student.name }}
+			</li>
+	    </ul>
+	</div>
+	<button ng-click="createActionStep()" class="form-control">Add Action Step</button>
+</form>

@@ -3,14 +3,20 @@
 var path = require('path');
 var routes = {};
 
+var noteRoutes = require(path.join(__dirname, './noteRoutes'));
+routes.POSTeditNote = noteRoutes.POSTnote;
+routes.POSTeditNote = noteRoutes.GETnote;
+routes.POSTeditNote = noteRoutes.POSTeditNote;
+
+
 var userRoutes = require(path.join(__dirname, './userRoutes'));
 var studentRoutes = require(path.join(__dirname, './studentRoutes'));
-var entryRoutes = require(path.join(__dirname, './entryRoutes'));
+// var entryRoutes = require(path.join(__dirname, './entryRoutes'));
 var cohortRoutes = require(path.join(__dirname, './cohortRoutes'));
-var overviewRoutes = require(path.join(__dirname, './overviewRoutes'));
+// var overviewRoutes = require(path.join(__dirname, './overviewRoutes'));
 
-routes.GEToverview = overviewRoutes.GEToverview;
-routes.POSTeditOverview = overviewRoutes.POSTeditOverview;
+// routes.GEToverview = overviewRoutes.GEToverview;
+// routes.POSTeditOverview = overviewRoutes.POSTeditOverview;
 
 routes.GETallStudents = studentRoutes.GETallStudents;
 routes.GETstudent = studentRoutes.GETstudent;
@@ -29,12 +35,12 @@ routes.POSTchangeAdmin = userRoutes.POSTchangeAdmin;
 routes.POSTchangePassword = userRoutes.POSTchangePassword;
 routes.DELETEdelUser = userRoutes.DELETEdelUser;
 
-routes.GETstudentEntriesList = entryRoutes.GETstudentEntriesList;
-routes.POSTnewDailyEntry = entryRoutes.POSTnewDailyEntry;
-routes.POSTnewLongEntry = entryRoutes.POSTnewLongEntry;
-routes.GETstudentEntries = entryRoutes.GETstudentEntries;
-routes.GETallStudentEntries = entryRoutes.GETallStudentEntries;
-routes.GETcohortEntries = entryRoutes.GETcohortEntries;
+// routes.GETstudentEntriesList = entryRoutes.GETstudentEntriesList;
+// routes.POSTnewDailyEntry = entryRoutes.POSTnewDailyEntry;
+// routes.POSTnewLongEntry = entryRoutes.POSTnewLongEntry;
+// routes.GETstudentEntries = entryRoutes.GETstudentEntries;
+// routes.GETallStudentEntries = entryRoutes.GETallStudentEntries;
+// routes.GETcohortEntries = entryRoutes.GETcohortEntries;
 
 routes.POSTnewCohortEntry = cohortRoutes.POSTnewCohortEntry;
 

@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-xs-12">
+    <div id="content-title" class="content">
+      <h1>Notes</h1>
+      <daterange updateFn="getNotes"></daterange>
+      <button class="action-step-nav" ui-sref="index.dashboard.listActionSteps">{{ activeSteps.length }} Action Step{{ (activeSteps.length != 1 ) ? 's' : '' }}</button>
+    </div>
+  </div>
+  <div class="col-xs-12">
+    <ul class="note-types" ng-if="activeStudents.length > 0">
+      <li ng-repeat="student in activeStudents"
+          ng-click="setStudent(student)"
+          class="{{ colorScheme[student._id] }}">
+            {{ student.name }}
+          </li>
+    </ul>
+  </div>
+  <div class="col-xs-12">
+    <div ng-repeat="schema in schemas"
+        ng-if="schema.private != true && activeStudents.length > 0"
+        class="schema-group"
+        ng-init="schema.hasNumber = utilityService.findWithAttr(schema.questions, 'input', 'number') > -1"
+        ng-cloak>
+      <h2>
+        {{ schema.name }}
+        <button class="add-note" ng-click="startNote(schema)">
+          <i class="glyphicon glyphicon-pencil fa fa-pencil-square-o"></i>&nbsp;Add note
+        </button>
+        <button class="add-note" ng-click="schema.showViz = !schema.showViz" ng-if="schema.hasNumber">
+          <i class="glyphicon glyphicon-stats"></i>&nbsp;Visualize
+        </button>
+      </h2>
+      <table class="table" ng-show="notes[schema.name].length > 0">
+        <tr>
+          <th>Date</th>
+          <th ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
+          capitalize }}</th>
+        </tr>
+        <tr ui-sref="index.dashboard.showNote({note_id: note._id})" ng-repeat="note in notes[schema.name]" class="{{ colorScheme[note.studentID] }}">
+          <td>{{ note._id | mongoDate | date }} &nbsp; <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i></td>
+          <td ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ note[field] }}</td>
+        </tr>
+      </table>
+      <visualization ng-init="schema.showViz = false" notes="notes[schema.name]" schema="schema" ng-show="schema.showViz"></visualization>
+
+      <hr>
+    </div>
+  </div>
+</div>
