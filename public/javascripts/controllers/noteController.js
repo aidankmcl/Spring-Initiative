@@ -3,14 +3,17 @@ angular.module('springInitiativeApp')
     function($scope, $http, $state, $stateParams, dataFactory, utilityService) {
       $scope.activeSchema = dataFactory.activeSchema;
       $scope.activeStudents = dataFactory.activeStudents;
-      $scope.editNote = {
-        attachments: []
-      };
+      $scope.actionSteps = dataFactory.actionSteps;
+      $scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
+      $scope.utilityService = utilityService;
       
       $scope.notes = {};
       $scope.noteFields = {};
       $scope.colorScheme = {};
-      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "attachments"]
+      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "attachments"];
+      $scope.editNote = {
+        attachments: []
+      };
 
       $scope.showNoteID = $stateParams.note_id || '';
       if ($scope.showNoteID) {
@@ -19,10 +22,14 @@ angular.module('springInitiativeApp')
         }, utilityService.logErr);
       }
 
-
       $scope.$on('setSchema', function(event, schema) {
         $scope.activeSchema = schema;
-      })
+      });
+
+      $scope.$on('actionSteps', function(event, actionSteps) {
+        $scope.actionSteps = actionSteps;
+        $scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
+      });
 
       $scope.startNote = function(schema) {
         dataFactory.setSchema(schema);
@@ -36,10 +43,6 @@ angular.module('springInitiativeApp')
         } else {
           $scope.notes = {}
         }
-
-        for (var i=0; i<students.length; i++) {
-          $scope.colorScheme[students[i]._id] = "color-" + i;
-        }
       });
 
       $scope.setStudent = function(student) {
@@ -47,9 +50,15 @@ angular.module('springInitiativeApp')
       }
 
       $scope.refreshNotes = function() {
+        if (!$scope.schemas) return;
+
         $scope.schemas.forEach(function(schema) {
           $scope.getNotes($scope.activeStudents, schema.name, $scope.startDate, $scope.endDate);
         });
+
+        for (var i=0; i<$scope.activeStudents.length; i++) {
+          $scope.colorScheme[$scope.activeStudents[i]._id] = "color-" + i;
+        }
       }
 
       $scope.setSchema = function(schema) {

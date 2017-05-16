@@ -13,7 +13,7 @@ var logErr = function(err, res) {
 var getKeys = function(notes) {
   var keys = {};
   notes.forEach(function(note) {
-    for (var key in note.toJSON()) keys[key] = key;
+    for (var key in note) keys[key] = key;
   });
   return keys;
 }
@@ -26,7 +26,7 @@ routes.POSTnote = function(req, res, next) {
 }
 
 routes.GETnote = function(req, res, next) {
-   Notes.find({_id: req.params.id}, function(err, note) {
+  Notes.find({_id: req.params._id}, function(err, note) {
     if (err) return logErr(err, res);
     res.json(note);
   });
@@ -45,8 +45,11 @@ routes.GETnotes = function(req, res, next) {
   Notes.find(search, function(err, notes) {
     if (err) return logErr(err, res);
     var keys = getKeys(notes);
+    for (var i=0; i<notes.length; i++) {
+      notes[i]['created'] = notes[i]._id.getTimestamp().getTime();
+    }
     res.json({ data: notes, noteFields: keys });
-  });
+  }).lean();
 }
 
 routes.POSTeditNote = function(req, res, next) {

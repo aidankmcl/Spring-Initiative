@@ -57,8 +57,8 @@ app.post('/api/logout', index.POSTlogout);
 app.post('/api/register', index.POSTregister);
 
 var noteRoutes = require(path.join(__dirname, './routes/noteRoutes'));
-app.get('/api/notes/get', noteRoutes.GETnotes);
-app.get('/api/notes/get/:id', noteRoutes.GETnote);
+app.get('/api/notes', noteRoutes.GETnotes);
+app.get('/api/notes/:_id', noteRoutes.GETnote);
 app.post('/api/notes/add', noteRoutes.POSTnote);
 app.post('/api/notes/edit', noteRoutes.POSTeditNote);
 
@@ -67,6 +67,12 @@ app.post('/api/schema/get', schemaRoutes.GETschema);
 app.post('/api/schema/add', schemaRoutes.POSTschema);
 app.put('/api/schema/:_id', schemaRoutes.PUTupdateSchema);
 app.delete('/api/schema/:_id', schemaRoutes.DELETEschema);
+
+var actionStepRoutes = require(path.join(__dirname, './routes/actionStepRoutes'));
+app.get('/api/action-steps', actionStepRoutes.GETactionSteps);
+app.get('/api/action-steps/:_id', actionStepRoutes.GETactionStep);
+app.post('/api/action-steps', actionStepRoutes.POSTactionStep);
+app.put('/api/action-steps/:_id', actionStepRoutes.PUTupdateActionStep);
 
 var studentRoutes = require(path.join(__dirname, './routes/studentRoutes'));
 app.get('/api/students/:_id', studentRoutes.GETstudent);

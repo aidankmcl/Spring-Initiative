@@ -3,6 +3,8 @@ angular.module('springInitiativeApp')
     return {
       restrict: 'E',
       link: function (scope, elm, attrs) {
+        elm.css({ 'cursor': 'pointer' });
+
         elm.on('click', function ($event) {
           $event.stopPropagation();
           if ($window.history.length) {

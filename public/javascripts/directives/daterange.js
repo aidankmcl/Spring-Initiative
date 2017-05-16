@@ -2,8 +2,11 @@ angular.module('springInitiativeApp')
   .directive('daterange', function() {
     return {
       restrict: 'E',
+      scope: {
+        updateFn: '&'
+      },
       link: function(scope, element, attribute) {
-        start = moment().subtract(7, 'days');
+        start = moment().subtract(29, 'days');
         end = moment();
         scope.startDate = start._d;
         scope.endDate = end._d;
@@ -12,7 +15,7 @@ angular.module('springInitiativeApp')
             $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             scope.startDate = start._d;
             scope.endDate = end._d;
-            scope.getNotes();
+            scope.updateFn();
         }
 
         $('#reportrange').daterangepicker({

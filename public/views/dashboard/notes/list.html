@@ -1,8 +1,9 @@
 <div class="row">
   <div class="col-xs-12">
     <div id="content-title" class="content">
-      <h1>Note list</h1>
+      <h1>Notes</h1>
       <daterange updateFn="getNotes"></daterange>
+      <button class="action-step-nav" ui-sref="index.dashboard.listActionSteps">{{ activeSteps.length }} Action Step{{ (activeSteps.length != 1 ) ? 's' : '' }}</button>
     </div>
   </div>
   <div class="col-xs-12">
@@ -17,13 +18,15 @@
   <div class="col-xs-12">
     <div ng-repeat="schema in schemas"
         ng-if="schema.private != true && activeStudents.length > 0"
-        class="schema-group" ng-cloak>
+        class="schema-group"
+        ng-init="schema.hasNumber = utilityService.findWithAttr(schema.questions, 'input', 'number') > -1"
+        ng-cloak>
       <h2>
         {{ schema.name }}
         <button class="add-note" ng-click="startNote(schema)">
           <i class="glyphicon glyphicon-pencil fa fa-pencil-square-o"></i>&nbsp;Add note
         </button>
-        <button class="add-note" ng-click="startNote(schema)">
+        <button class="add-note" ng-click="schema.showViz = !schema.showViz" ng-if="schema.hasNumber">
           <i class="glyphicon glyphicon-stats"></i>&nbsp;Visualize
         </button>
       </h2>
@@ -38,9 +41,9 @@
           <td ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ note[field] }}</td>
         </tr>
       </table>
-      <visualization notes="notes" schema="schema"></visualization>
+      <visualization ng-init="schema.showViz = false" notes="notes[schema.name]" schema="schema" ng-show="schema.showViz"></visualization>
+
+      <hr>
     </div>
   </div>
 </div>
-
-<link href="stylesheets/tabs.css" rel="stylesheet">

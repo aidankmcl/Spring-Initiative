@@ -1,5 +1,5 @@
 angular.module('springInitiativeApp')
-    .directive('visualization', function() {
+    .directive('visualization', ['utilityService', function(utilityService) {
         return {
             restrict: 'E',
             replace: true,
@@ -9,22 +9,40 @@ angular.module('springInitiativeApp')
                 schema: '='
             },
             link: function (scope, elm, attrs) {
-                console.dir(JSON.stringify(scope.notes));
-                console.log(JSON.stringify(scope.schema.name));
-                // scope.inputOptions = [];
-                // scope.options = { chart: { type: 'lineChart', height: 500,
-                //     // turn off and the error does not arrise
-                //     useInteractiveGuideline: true,
-                //     xAxis: { tickFormat: function (d) { return d3.time.format('%-m/%d/%y')(new Date(d)); } } } };
+                scope.inputOptions = [];
+                scope.graphData = [];
+                scope.findWithAttr = utilityService.findWithAttr;
+                scope.options = { chart: { type: 'lineChart', height: 500,
+                    // turn off and the error does not arrise
+                    useInteractiveGuideline: true,
+                    xAxis: { tickFormat: function (d) { return d3.time.format('%-m/%d/%y')( new Date(d) ); } } } };
 
-                // scope.updateGraph = function() {
-                //     scope.graphData[0].key = scope.dataKey;
-                //     scope.graphData[0].values = []
-                //     for (var i=0; i<scope.notes.length; i++) {
-                //         scope.graphData[0].values.push({ x: scope.notes[i].created, y: parseInt(scope.notes[i][scope.dataKey]) })
-                //     }
-                // }
-                // scope.data = [{color: "blue", key: "", values: [{x: 1, y: 0},{x:2, y: 0}, {x: 3, y: 0}]}]
+                var colors = ["blue", "red", "green", "purple", "teal"];
+
+                scope.toggleInput = function(input) {
+                    var inputIndex = utilityService.findWithAttr(scope.inputOptions, "key", input.key);
+                    if (inputIndex > -1) {
+                        scope.inputOptions.splice(inputIndex, 1);
+                    } else {
+                        scope.inputOptions.push(input);
+                    }
+                    scope.updateGraph();
+                }
+
+                scope.updateGraph = function() {
+                    scope.graphData = [];
+                    console.log(_.groupBy(scope.notes, 'studentID'));
+                    for (var i=0; i<scope.inputOptions.length; i++) {
+                        scope.graphData.push({});
+                        scope.graphData[i].color = colors[i];
+                        scope.graphData[i].key = scope.inputOptions[i].name;
+                        scope.graphData[i].values = [];
+                        for (var j=0; j<scope.notes.length; j++) {
+                            console.log(scope.notes[j]);
+                            scope.graphData[i].values.push({ x: scope.notes[j].created, y: parseInt(scope.notes[j][scope.inputOptions[i].key]) });
+                        }
+                    }
+                }
             }
         }
-    });
+    }]);

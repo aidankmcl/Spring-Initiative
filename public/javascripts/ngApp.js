@@ -77,6 +77,22 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
     controller: 'noteController'
   })
 
+  // Action Step Views
+  .state('index.dashboard.listActionSteps', {
+    url: '/action-steps',
+    templateUrl: 'views/dashboard/actions/list.html',
+    controller: 'actionStepController'
+  })
+  .state('index.dashboard.addActionStep', {
+    url: '/action-steps/add',
+    templateUrl: 'views/dashboard/actions/add.html',
+    controller: 'actionStepController'
+  })
+  .state('index.dashboard.viewActionStep', {
+    url: '/action-steps/:step_id',
+    templateUrl: 'views/dashboard/actions/view.html',
+    controller: 'actionStepController'
+  })
 
   /**************************************
   *********** Visualization *************
