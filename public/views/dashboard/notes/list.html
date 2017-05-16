@@ -34,7 +34,7 @@
         <tr>
           <th>Date</th>
           <th ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
-          capitalize }}</th>
+          capitalize | split }}</th>
         </tr>
         <tr ui-sref="index.dashboard.showNote({note_id: note._id})" ng-repeat="note in notes[schema.name]" class="{{ colorScheme[note.studentID] }}">
           <td>{{ note._id | mongoDate | date }} &nbsp; <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i></td>

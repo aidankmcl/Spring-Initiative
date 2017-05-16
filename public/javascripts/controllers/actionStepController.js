@@ -4,19 +4,35 @@ angular.module('springInitiativeApp')
 			$scope.activeSchema = dataFactory.activeSchema;
 			$scope.activeStudents = dataFactory.activeStudents;
 			$scope.actionSteps = dataFactory.actionSteps;
+			$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
+
+			if (!$scope.activeStudents) {
+				dataFactory.getActionSteps(dataFactory.activeStudents).then(function (res) {
+	        dataFactory.actionSteps = res.data.data;
+	        $rootScope.$broadcast('actionSteps', dataFactory.actionSteps);
+	      }, utilityService.logErr);
+			}
 			
 			$scope.colorScheme = {};
 			$scope.showStepID = $stateParams.step_id || '';
 			if ($scope.showStepID) {
         dataFactory.getActionStep($scope.showStepID).then(function(res) {
           $scope.showStep = res.data[0];
+          dataFactory.getStudents({ id: res.data[0].studentID }).then(function success(res) {
+          	$scope.currentStudent = res.data.data
+          }, utilityService.logErr);
         }, utilityService.logErr);
       }
 
-			$scope.refreshColors = function() {				
-				for (var i=0; i<$scope.activeStudents.length; i++) {
-          $scope.colorScheme[$scope.activeStudents[i]._id] = "color-" + i;
-        }
+			$scope.refreshColors = function() {
+				if ($scope.activeStudents.length == 0) {
+					$scope.colorScheme = {};
+					return;
+				} else {
+					for (var i=0; i<$scope.activeStudents.length; i++) {
+	          $scope.colorScheme[$scope.activeStudents[i]._id] = "color-" + i;
+	        }
+				}
 			}
 			$scope.refreshColors();
 
@@ -26,6 +42,7 @@ angular.module('springInitiativeApp')
 
 			$scope.$on('actionSteps', function(event, actionSteps) {
 				$scope.actionSteps = actionSteps;
+				$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
 				$scope.refreshColors();
 			});
 

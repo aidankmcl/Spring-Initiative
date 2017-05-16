@@ -1,8 +1,14 @@
 angular.module('springInitiativeApp')
 	.filter('capitalize', function() {
 	    return function(input) {
-	      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+			return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
 	    }
+	})
+
+	.filter('split', function() {
+		return function(input) {
+			return input.split('_').join(' ')
+		}
 	})
 
 	.filter('mongoDate', function(utilityService) {

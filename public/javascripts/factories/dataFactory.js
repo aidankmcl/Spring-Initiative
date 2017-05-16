@@ -4,6 +4,7 @@ angular.module('springInitiativeApp')
     var dataFactory = {};
 
     // Shared variables
+    dataFactory.studentList = [];
     dataFactory.activeStudents = [];
     dataFactory.activeSchema = {};
     dataFactory.actionSteps = [];
@@ -22,7 +23,8 @@ angular.module('springInitiativeApp')
 
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
 
-      dataFactory.getActionSteps(dataFactory.activeStudents).then(function (res) {
+      var students = (dataFactory.activeStudents.length > 0) ? dataFactory.activeStudents : dataFactory.studentList;
+      dataFactory.getActionSteps(students).then(function (res) {
         dataFactory.actionSteps = res.data.data;
         $rootScope.$broadcast('actionSteps', dataFactory.actionSteps);
       }, utilityService.logErr);

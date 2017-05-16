@@ -18,6 +18,7 @@ angular.module('springInitiativeApp')
 
       $scope.refreshSchemas = function() {
         dataFactory.getSchemas({}).then(function success(res) {
+          $scope.cleanSlate();
           $scope.schemas = res.data.data;
         }, utilityService.logErr);
       }
@@ -25,18 +26,24 @@ angular.module('springInitiativeApp')
 
       $scope.saveSchema = function() {
         dataFactory.addSchema($scope.editSchema).then(function success(res) {
-          console.log(res);
+          alert("New Schema created successfully!");
+          $state.go('index.dashboard.schemas');
+          $scope.refreshSchemas();
         }, utilityService.logErr);
       }
 
       $scope.updateSchema = function() {
         dataFactory.updateSchema($scope.editSchema).then(function success(res) {
-          console.log(res);
+          alert("Schema updated successfully!");
+          $state.go('index.dashboard.schemas');
+          $scope.refreshSchemas();
         }, utilityService.logErr)
       }
 
       $scope.deleteSchema = function(id) {
         dataFactory.deleteSchema(id).then(function success(res) {
+          alert("Schema deleted successfully!");
+          $scope.refreshSchemas();
           utilityService.removeFromArray($scope.schemas, "_id", id);
         }, utilityService.logErr);
       }

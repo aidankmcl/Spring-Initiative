@@ -22,7 +22,7 @@ routes.GETstudent = function(req, res, next) {
     _id: req.params._id
   }, function(err, currentStudent) {
     if (err) return logErr(err, res);
-    res.json({ currentStudent: currentStudent });
+    res.json({ data: currentStudent });
   });
 };
 
