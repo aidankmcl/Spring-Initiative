@@ -15,12 +15,14 @@
 	<h1> {{ newSchema ? "Add New" : "Edit"}} Schema</h1>
 	<form novalidate>
 		<label>Name<input class="form-control" type="text" ng-model="editSchema.name" placeholder="Text"></label>
-		<div class="question" ng-repeat="question in editSchema.questions">
+		<div class="question-field" ng-repeat="question in editSchema.questions">
 			<input type="text" ng-model="question.name" placeholder="Field name">
 			<select ng-model="question.input" ng-init="question.input = question.input || 'text'">
-				<option value="text">Text</option>
+				<option value="textarea">Long Text</option>
+				<option value="text">Short Text</option>
 				<option value="number">Number</option>
 				<option value="radio">Choice</option>
+				<option value="stars">Stars</option>
 			</select>
 			<button ng-click="editSchema.questions.splice($index, 1)">Remove</button>
 			<div class="choice" ng-if="question.input == 'radio'" ng-init="question.answers = question.answers || []">

@@ -21,3 +21,12 @@ angular.module('springInitiativeApp')
 			return dt = new Date(secondsSinceEpoch*1000);
 		};
 	})
+
+	.filter('truncate', function() {
+		return function(input, length) {
+			var length = length || 30,
+				input = input || '',
+				text = input.toString();
+			return (text.length > length) ? text.slice(0, length) + '...' : text;
+		}
+	})

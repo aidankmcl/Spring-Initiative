@@ -30,6 +30,11 @@ angular.module('springInitiativeApp')
       }, utilityService.logErr);
     }
 
+    dataFactory.setStudentList = function(students) {
+      dataFactory.studentList = students;
+      $rootScope.$broadcast('studentList', students);
+    }
+
     dataFactory.setStudent = function(student) {
       dataFactory.activeStudents = [student]
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
@@ -37,7 +42,6 @@ angular.module('springInitiativeApp')
 
     dataFactory.addStudent = function(scopeStudent) {
       var student = angular.copy(scopeStudent);
-      student["created"] = new Date().getTime();
       return $http.post('/api/students/add', angular.toJson(student));
     }
 

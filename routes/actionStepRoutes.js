@@ -46,7 +46,7 @@ routes.GETactionSteps = function(req, res, next) {
   ActionStep.find(search, function(err, actionSteps) {
     if (err) return logErr(err, res);
     for (var i=0; i<actionSteps.length; i++) {
-      actionSteps[i]['created'] = actionSteps[i]._id.getTimestamp().getTime();
+      actionSteps[i]['created'] = actionSteps[i]['created'] || actionSteps[i]._id.getTimestamp().getTime();
     }
     res.json({ data: actionSteps });
   }).lean();

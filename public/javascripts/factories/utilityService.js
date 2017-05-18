@@ -10,6 +10,17 @@ angular.module('springInitiativeApp')
       return -1;
     }
 
+    utilityService.schemaHasNumberField = function(schema) {
+      var viableInput = ['number', 'stars'];
+
+      for (var i=0; i<viableInput.length; i++) {
+        var index = utilityService.findWithAttr(schema.questions, 'input', viableInput[i]);
+        if (index > -1) return true;
+      }
+
+      return false;
+    }
+
     utilityService.removeFromArray = function(array, attr, value) {
       return array.splice(utilityService.findWithAttr(array, attr, value), 1);
     }

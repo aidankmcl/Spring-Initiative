@@ -19,7 +19,7 @@
     <div ng-repeat="schema in schemas"
         ng-if="schema.private != true && activeStudents.length > 0"
         class="schema-group"
-        ng-init="schema.hasNumber = utilityService.findWithAttr(schema.questions, 'input', 'number') > -1"
+        ng-init="schema.hasNumber = utilityService.schemaHasNumberField(schema)"
         ng-cloak>
       <h2>
         {{ schema.name }}
@@ -33,16 +33,28 @@
       <table class="table" ng-show="notes[schema.name].length > 0">
         <tr>
           <th>Date</th>
-          <th ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
+          <th ng-repeat="field in noteFields[schema.name]"
+              ng-if="hiddenFields.indexOf(field) == -1">{{ field | 
           capitalize | split }}</th>
         </tr>
-        <tr ui-sref="index.dashboard.showNote({note_id: note._id})" ng-repeat="note in notes[schema.name]" class="{{ colorScheme[note.studentID] }}">
-          <td>{{ note._id | mongoDate | date }} &nbsp; <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i></td>
-          <td ng-repeat="field in noteFields[schema.name]" ng-if="hiddenFields.indexOf(field) == -1">{{ note[field] }}</td>
+        <tr ui-sref="index.dashboard.showNote({note_id: note._id})"
+            ng-repeat="note in notes[schema.name] | orderBy:'date'"
+            class="{{ colorScheme[note.studentID] }} info-row">
+          <td>{{ note.date | date }} &nbsp; 
+            <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i>
+          </td>
+          <td ng-repeat="field in noteFields[schema.name]"
+              ng-if="hiddenFields.indexOf(field) == -1">
+              {{ note[field] | truncate }}
+          </td>
         </tr>
       </table>
-      <visualization ng-init="schema.showViz = false" notes="notes[schema.name]" schema="schema" ng-show="schema.showViz"></visualization>
 
+      <visualization 
+        ng-init="schema.showViz = false"
+        notes="notes[schema.name]"
+        schema="schema"
+        ng-show="schema.showViz"></visualization>
       <hr>
     </div>
   </div>

@@ -1,17 +1,33 @@
 angular.module('springInitiativeApp')
-  .controller('actionStepController', ["$scope", "$http", "$state", "$stateParams", "dataFactory", "utilityService",
-    function($scope, $http, $state, $stateParams, dataFactory, utilityService) {
+  .controller('actionStepController', ["$scope", "$rootScope", "$http", "$state", "$stateParams", "dataFactory", "utilityService",
+    function($scope, $rootScope, $http, $state, $stateParams, dataFactory, utilityService) {
 			$scope.activeSchema = dataFactory.activeSchema;
 			$scope.activeStudents = dataFactory.activeStudents;
 			$scope.actionSteps = dataFactory.actionSteps;
 			$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
 
-			if (!$scope.activeStudents) {
-				dataFactory.getActionSteps(dataFactory.activeStudents).then(function (res) {
+			$scope.$on('toggleStudent', function(event, students) {
+				$scope.activeStudents = students;
+			});
+
+			$scope.$on('actionSteps', function(event, actionSteps) {
+				$scope.actionSteps = actionSteps;
+				console.log($scope.actionSteps);
+				$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
+				$scope.refreshColors();
+			});
+
+			$scope.$on('studentList', function(event, students) {
+				$scope.studentList = students;
+			});
+
+			$scope.refreshSteps = function() {
+				dataFactory.getActionSteps(dataFactory.activeStudents || dataFactory.studentList).then(function (res) {
 	        dataFactory.actionSteps = res.data.data;
 	        $rootScope.$broadcast('actionSteps', dataFactory.actionSteps);
 	      }, utilityService.logErr);
 			}
+			$scope.refreshSteps();
 			
 			$scope.colorScheme = {};
 			$scope.showStepID = $stateParams.step_id || '';
@@ -36,16 +52,6 @@ angular.module('springInitiativeApp')
 			}
 			$scope.refreshColors();
 
-			$scope.$on('toggleStudent', function(event, students) {
-				$scope.activeStudents = students;
-			});
-
-			$scope.$on('actionSteps', function(event, actionSteps) {
-				$scope.actionSteps = actionSteps;
-				$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
-				$scope.refreshColors();
-			});
-
 			$scope.createActionStep = function() {
 				dataFactory.addActionStep($scope.description, $scope.activeStudents).then(function success(res) {
 					$state.go('index.dashboard.listActionSteps');
@@ -58,6 +64,7 @@ angular.module('springInitiativeApp')
 				dataFactory.updateActionStep($scope.showStep).then(function success(res) {
 					alert("Record Updated Successfully!");
 					$state.go('index.dashboard.listActionSteps');
+					$scope.refreshSteps();
 				}, utilityService.logErr)
 			}
 	  }

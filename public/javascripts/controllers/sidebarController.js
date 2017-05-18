@@ -7,7 +7,7 @@ angular.module('springInitiativeApp')
 
     	dataFactory.getStudents({}).then(function success(res) {
   			$scope.studentList = res.data.data;
-        dataFactory.studentList = res.data.data;
+        dataFactory.setStudentList(res.data.data);
     	}, utilityService.logErr);
 
       $scope.$on('toggleStudent', function(event, students) {

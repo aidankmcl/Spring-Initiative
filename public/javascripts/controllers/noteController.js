@@ -10,7 +10,7 @@ angular.module('springInitiativeApp')
       $scope.notes = {};
       $scope.noteFields = {};
       $scope.colorScheme = {};
-      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "attachments"];
+      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "date", "attachments"];
       $scope.editNote = {
         attachments: []
       };
@@ -88,6 +88,8 @@ angular.module('springInitiativeApp')
       }
 
       $scope.createNote = function(item, studentID, activeSchema) {
+        item.date = new Date(item.date).getTime();
+
         dataFactory.addNote(item, studentID, activeSchema.name).then(function success(res) {
           $state.go('index.dashboard.viewStudent', {studentID: $scope.studentID, activeSchema: $scope.activeSchema});
           $scope.refreshNotes($scope.activeSchema);

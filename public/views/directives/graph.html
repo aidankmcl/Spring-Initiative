@@ -2,7 +2,7 @@
 	<h3>Field to graph:
 		<button style="margin-right: 10px" 
 			ng-repeat="question in schema.questions"
-			ng-if="question.input == 'number'"
+			ng-if="['number', 'stars'].indexOf(question.input) > -1"
 			ng-click="toggleInput(question)"
 			ng-class="{active: findWithAttr(inputOptions, question.key, question.name)}">
 			{{ question.name }}

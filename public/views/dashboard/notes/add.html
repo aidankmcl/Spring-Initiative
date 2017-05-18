@@ -22,10 +22,35 @@
 <div class="row">
   <div class="col-xs-12" ng-if="activeStudents.length == 1">
     <h2>{{ activeSchema.name }}</h2>
-    <form novalidate>
-      <div class="question row" ng-repeat="question in activeSchema.questions">
+    <form class="row" novalidate>
+      <div class="col-xs-12 margin-bottom-md">
+        <label for="note-date">Date</label><br>
+        <datepicker ng-model="editNote.date" id="note-date"></datepicker>
+      </div>
+      <div class="question" type="{{ question.input }}" ng-repeat="question in activeSchema.questions">
         <div class="col-xs-12">
           <div ng-switch="question.input">
+            <div class="textarea" ng-switch-when="textarea">
+                <label for="#{{ question.key }}-textarea">{{ question.name }}</label>
+                <textarea id="{{ question.key }}-textarea" 
+                  ng-model="editNote[question.key]" 
+                  placeholder="Type information here..."></textarea>
+            </div>
+            <div class="stars" ng-switch-when="stars">
+              <label>{{ question.name }}</label><br>
+              <div class="star-input">
+                <input ng-click="selectOption(question, 5)" class="star star-5" id="{{ question.key }}-star-5" type="radio" name="{{ question.key }}-star"/>
+                <label class="star star-5" for="{{ question.key }}-star-5"></label>
+                <input ng-click="selectOption(question, 4)" class="star star-4" id="{{ question.key }}-star-4" type="radio" name="{{ question.key }}-star"/>
+                <label class="star star-4" for="{{ question.key }}-star-4"></label>
+                <input ng-click="selectOption(question, 3)" class="star star-3" id="{{ question.key }}-star-3" type="radio" name="{{ question.key }}-star"/>
+                <label class="star star-3" for="{{ question.key }}-star-3"></label>
+                <input ng-click="selectOption(question, 2)" class="star star-2" id="{{ question.key }}-star-2" type="radio" name="{{ question.key }}-star"/>
+                <label class="star star-2" for="{{ question.key }}-star-2"></label>
+                <input ng-click="selectOption(question, 1)" class="star star-1" id="{{ question.key }}-star-1" type="radio" name="{{ question.key }}-star"/>
+                <label class="star star-1" for="{{ question.key }}-star-1"></label>
+              </div>
+            </div>
             <div class="choice" ng-switch-when="radio">
               <strong>{{ question.name }}</strong><br>
               <span ng-repeat="answer in question.answers">
@@ -39,7 +64,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="col-xs-12">
         <h3>Attachments</h3>
         <ul>
           <li ng-repeat="file in editNote.attachments">
@@ -49,10 +74,8 @@
         <input type="file" ng-model="_tempAttachment" accept="image/*" app-filereader/> <button ng-click="addAttachment(_tempAttachment)">Add</button>
       </div>
 
-      <div class="row">
-        <div class="col-xs-12 col-sm-6">
-          <button class="form-control" ng-click="createNote(editNote, activeStudents[0]._id, activeSchema)">Save Note</button>
-        </div>
+      <div class="col-xs-12 col-sm-6">
+        <button class="form-control" ng-click="createNote(editNote, activeStudents[0]._id, activeSchema)">Save Note</button>
       </div>
     </form>
   </div>

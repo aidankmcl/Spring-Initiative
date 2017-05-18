@@ -6,17 +6,20 @@
 </div>
 
 <div class="row">
-  <ul>
-    <li ng-repeat="(field, value) in showNote" ng-if="hiddenFields.indexOf(field) == -1">
-      {{ field }}: {{ value }}
+  <ul class="detail-view">
+    <li class="margin-bottom-md" ng-repeat="(field, value) in showNote" ng-if="hiddenFields.indexOf(field) == -1">
+      <label>{{ field | capitalize | split }}</label><br>
+      {{ value }}
     </li>
   </ul>
-  <p>Attachments</p>
-  <ul>
-    <li ng-repeat="attachment in showNote.attachments">
-      <img src="{{ attachment }}" style="max-width: 300px">
-    </li>
-  </ul>
+  <div ng-if="showNote.attachments.length">
+    <p>Attachments</p>
+    <ul>
+      <li ng-repeat="attachment in showNote.attachments">
+        <img src="{{ attachment }}" style="max-width: 300px">
+      </li>
+    </ul>
+  </div>
 </div>
 
 <link href="stylesheets/tabs.css" rel="stylesheet">

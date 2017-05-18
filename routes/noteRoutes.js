@@ -46,7 +46,7 @@ routes.GETnotes = function(req, res, next) {
     if (err) return logErr(err, res);
     var keys = getKeys(notes);
     for (var i=0; i<notes.length; i++) {
-      notes[i]['created'] = notes[i]._id.getTimestamp().getTime();
+      notes[i]['date'] = notes[i]['date'] || notes[i]._id.getTimestamp().getTime();
     }
     res.json({ data: notes, noteFields: keys });
   }).lean();
