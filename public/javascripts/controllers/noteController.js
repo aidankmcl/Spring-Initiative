@@ -6,11 +6,12 @@ angular.module('springInitiativeApp')
       $scope.actionSteps = dataFactory.actionSteps;
       $scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
       $scope.utilityService = utilityService;
+      $scope.activeItems = dataFactory.activeItems;
       
       $scope.notes = {};
       $scope.noteFields = {};
       $scope.colorScheme = {};
-      $scope.hiddenFields = ["noteType", "studentID", "_id", "__v", "created", "date", "attachments"];
+      $scope.hiddenFields = ["noteType", "studentID", "entityID", "_id", "__v", "created", "date", "attachments"];
       $scope.editNote = {
         attachments: []
       };
@@ -31,33 +32,37 @@ angular.module('springInitiativeApp')
         $scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
       });
 
+      $scope.$on('toggleStudent', function(event, students) {
+        $scope.activeStudents = students;
+        $scope.activeCohort = {};
+      });
+
+      $scope.$on('toggleCohort', function(event, cohort) {
+        $scope.activeStudents = [];
+        $scope.activeCohort = cohort;
+      });
+
+      $scope.$on('activeItems', function(event, items) {
+        $scope.activeItems = items;
+        $scope.refreshNotes();
+      });
+
+      $scope.setStudent = dataFactory.setStudent;
+
       $scope.startNote = function(schema) {
         dataFactory.setSchema(schema);
         $state.go('index.dashboard.addNote');
       }
 
-      $scope.$on('toggleStudent', function(event, students) {
-        $scope.activeStudents = students;
-        if (students.length > 0) {
-          $scope.refreshNotes();
-        } else {
-          $scope.notes = {}
-        }
-      });
-
-      $scope.setStudent = function(student) {
-        dataFactory.setStudent(student);
-      }
-
       $scope.refreshNotes = function() {
-        if (!$scope.schemas) return;
+        if (!$scope.schemas || $scope.activeItems.length == 0) return;
 
         $scope.schemas.forEach(function(schema) {
-          $scope.getNotes($scope.activeStudents, schema.name, $scope.startDate, $scope.endDate);
+          $scope.getNotes($scope.activeItems, schema.name, $scope.startDate, $scope.endDate);
         });
 
-        for (var i=0; i<$scope.activeStudents.length; i++) {
-          $scope.colorScheme[$scope.activeStudents[i]._id] = "color-" + i;
+        for (var i=0; i<$scope.activeItems.length; i++) {
+          $scope.colorScheme[$scope.activeItems[i]._id] = "color-" + i;
         }
       }
 
@@ -87,12 +92,11 @@ angular.module('springInitiativeApp')
         $scope._tempAttachment = null;
       }
 
-      $scope.createNote = function(item, studentID, activeSchema) {
+      $scope.createNote = function(item, entityID, activeSchema) {
         item.date = new Date(item.date).getTime();
-
-        dataFactory.addNote(item, studentID, activeSchema.name).then(function success(res) {
-          $state.go('index.dashboard.viewStudent', {studentID: $scope.studentID, activeSchema: $scope.activeSchema});
-          $scope.refreshNotes($scope.activeSchema);
+        dataFactory.addNote(item, entityID, activeSchema.name).then(function success(res) {
+          $state.go('index.dashboard.viewStudent', {entityID: entityID, activeSchema: $scope.activeSchema});
+          $scope.refreshNotes();
         }, utilityService.logErr);
       }
 

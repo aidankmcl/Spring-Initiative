@@ -10,6 +10,10 @@ angular.module('springInitiativeApp')
       return -1;
     }
 
+    utilityService.getObject = function(array, attr, value) {
+      return array[utilityService.findWithAttr(array, attr, value)];
+    }
+
     utilityService.schemaHasNumberField = function(schema) {
       var viableInput = ['number', 'stars'];
 

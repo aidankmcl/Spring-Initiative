@@ -68,6 +68,13 @@ app.post('/api/schema/add', schemaRoutes.POSTschema);
 app.put('/api/schema/:_id', schemaRoutes.PUTupdateSchema);
 app.delete('/api/schema/:_id', schemaRoutes.DELETEschema);
 
+var cohortRoutes = require(path.join(__dirname, './routes/cohortRoutes'));
+app.get('/api/cohorts/:_id', cohortRoutes.GETcohort);
+app.get('/api/cohorts', cohortRoutes.GETcohorts);
+app.post('/api/cohorts', cohortRoutes.POSTcohort);
+app.put('/api/cohorts/:_id', cohortRoutes.PUTupdateCohort);
+app.delete('/api/cohorts/:_id', cohortRoutes.DELETEcohort);
+
 var actionStepRoutes = require(path.join(__dirname, './routes/actionStepRoutes'));
 app.get('/api/action-steps', actionStepRoutes.GETactionSteps);
 app.get('/api/action-steps/:_id', actionStepRoutes.GETactionStep);

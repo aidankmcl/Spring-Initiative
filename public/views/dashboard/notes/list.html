@@ -7,7 +7,7 @@
     </div>
   </div>
   <div class="col-xs-12">
-    <ul class="note-types" ng-if="activeStudents.length > 0">
+    <ul class="note-types" ng-if="activeItems.length > 0">
       <li ng-repeat="student in activeStudents"
           ng-click="setStudent(student)"
           class="{{ colorScheme[student._id] }}">
@@ -17,7 +17,7 @@
   </div>
   <div class="col-xs-12">
     <div ng-repeat="schema in schemas"
-        ng-if="schema.private != true && activeStudents.length > 0"
+        ng-if="schema.private != true && activeItems.length > 0"
         class="schema-group"
         ng-init="schema.hasNumber = utilityService.schemaHasNumberField(schema)"
         ng-cloak>
@@ -39,7 +39,7 @@
         </tr>
         <tr ui-sref="index.dashboard.showNote({note_id: note._id})"
             ng-repeat="note in notes[schema.name] | orderBy:'date'"
-            class="{{ colorScheme[note.studentID] }} info-row">
+            class="{{ colorScheme[note.entityID] }} info-row">
           <td>{{ note.date | date }} &nbsp; 
             <i ng-if="note.attachments.length > 0" class="glyphicon glyphicon-link"></i>
           </td>

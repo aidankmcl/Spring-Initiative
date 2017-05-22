@@ -7,11 +7,10 @@
     </div>
   </div>
   <div class="col-xs-12">
-    <ul class="students note-types" ng-if="activeStudents.length > 0">
-      <li ng-repeat="student in activeStudents"
-          ng-click="setStudent(student)"
-          class="{{ colorScheme[student._id] }}">
-            {{ student.name }}
+    <ul class="students note-types" ng-if="activeItems.length > 0">
+      <li ng-repeat="item in activeItems"
+          class="{{ colorScheme[item._id] }}">
+            {{ item.name }}
           </li>
     </ul>
   </div>
@@ -21,7 +20,7 @@
       <li ng-repeat="step in actionSteps"
           ui-sref="index.dashboard.viewActionStep({ step_id: step._id })"
           ng-if="!step.complete"
-          class="{{ colorScheme[step.studentID] }}">{{ step.description }}</li>
+          class="{{ colorScheme[step.entityID] }}">{{ step.description }}</li>
     </ul>
     <hr>
     <h2>Completed Steps</h2>
@@ -29,7 +28,7 @@
       <li ng-repeat="step in actionSteps"
           ui-sref="index.dashboard.viewActionStep({ step_id: step._id })"
           ng-if="step.complete"
-          class="{{ colorScheme[step.studentID] }}">{{ step.description }}</li>
+          class="{{ colorScheme[step.entityID] }}">{{ step.description }}</li>
     </ul>
   </div>
 </div>

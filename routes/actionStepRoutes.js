@@ -13,10 +13,10 @@ var logErr = function(err, res) {
 }
 
 routes.POSTactionStep = function(req, res, next) {
-	var actionSteps = _.map(req.body.studentIDs, function(studentID) {
-		return { 
+	var actionSteps = _.map(req.body.entityIDs, function(ID) {
+		return {
 			description: req.body.description,
-			studentID: studentID,
+			entityID: ID,
       complete: false
 		}
 	});
@@ -36,7 +36,7 @@ routes.GETactionStep = function(req, res, next) {
 
 routes.GETactionSteps = function(req, res, next) {
   var search = {
-    studentID: { '$in': req.query.studentIDs.split(',') },
+    entityID: { '$in': req.query.IDs.split(',') },
     _id: {
       "$lte": objectIdWithTimestamp(req.query.endDate),
       "$gte": objectIdWithTimestamp(req.query.startDate)

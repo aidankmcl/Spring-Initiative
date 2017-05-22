@@ -1,4 +1,3 @@
-
 angular.module('springInitiativeApp')
   .factory('dataFactory', ['$http', '$rootScope', 'utilityService', function ($http, $rootScope, utilityService) {
     var dataFactory = {};
@@ -8,8 +7,13 @@ angular.module('springInitiativeApp')
     dataFactory.activeStudents = [];
     dataFactory.activeSchema = {};
     dataFactory.actionSteps = [];
+    dataFactory.cohorts = [];
+    dataFactory.activeCohort = {};
+    dataFactory.activeItems = [];
 
-    // Student related
+    /**************************
+          Student Related
+    **************************/
     dataFactory.toggleStudent = function(student) {
       var studentIndex = dataFactory.activeStudents.findIndex(function (activeStudent) {
         return activeStudent._id == student._id;
@@ -21,12 +25,13 @@ angular.module('springInitiativeApp')
         dataFactory.activeStudents.push(student);
       }
 
+      dataFactory.activeCohort = {};
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
+      dataFactory.activeItems = dataFactory.activeStudents;
+      $rootScope.$broadcast('activeItems', dataFactory.activeItems);
 
-      var students = (dataFactory.activeStudents.length > 0) ? dataFactory.activeStudents : dataFactory.studentList;
-      dataFactory.getActionSteps(students).then(function (res) {
-        dataFactory.actionSteps = res.data.data;
-        $rootScope.$broadcast('actionSteps', dataFactory.actionSteps);
+      dataFactory.getActionSteps(dataFactory.activeItems).then(function success(res) {
+        dataFactory.setActionSteps(res.data.data);
       }, utilityService.logErr);
     }
 
@@ -36,7 +41,7 @@ angular.module('springInitiativeApp')
     }
 
     dataFactory.setStudent = function(student) {
-      dataFactory.activeStudents = [student]
+      dataFactory.activeStudents = [student];
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
     }
 
@@ -46,7 +51,7 @@ angular.module('springInitiativeApp')
     }
 
     dataFactory.getStudents = function(search) {
-      var url = (search.id) ? '/api/students/' + search.id : '/api/students';
+      var url = (search._id) ? '/api/students/' + search._id : '/api/students';
       return $http.get(url);
     }
 
@@ -54,11 +59,13 @@ angular.module('springInitiativeApp')
       return $http.delete('/api/students/' + id);
     }
 
-    // Note related
-    dataFactory.addNote = function(scopeNote, studentID, type) {
+    /**************************
+            Note related
+    **************************/
+    dataFactory.addNote = function(scopeNote, entityID, type) {
       var note = angular.copy(scopeNote);
       note["noteType"] = type;
-      note["studentID"] = studentID;
+      note["entityID"] = entityID;
       return $http.post('/api/notes/add', angular.toJson(note));
     }
 
@@ -66,14 +73,14 @@ angular.module('springInitiativeApp')
       return $http.get('/api/notes/' + id);
     }
 
-    dataFactory.getNotes = function(activeStudents, activeType, startDate, endDate) {
+    dataFactory.getNotes = function(activeItems, activeType, startDate, endDate) {
       var today = new Date();
       startDate = startDate || moment().subtract(29, 'days')._d;
       endDate = endDate || moment()._d;
 
-      var studentIDs = _.map(activeStudents, '_id').join(',');
+      var IDs = _.map(activeItems, '_id').join(',');
 
-      var URL = '/api/notes?noteType=' + activeType + '&studentIDs=' + studentIDs;
+      var URL = '/api/notes?noteType=' + activeType + '&IDs=' + IDs;
       URL += '&startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
       return $http.get(URL);
     }
@@ -82,7 +89,9 @@ angular.module('springInitiativeApp')
       return $http.get('/api/notes/keys?noteType=' + noteType);
     }
 
-    // Schema Related
+    /**************************
+          Schema Related
+    **************************/
     dataFactory.setSchema = function(schema) {
       dataFactory.activeSchema = schema;
       $rootScope.$broadcast('setSchema', schema);
@@ -103,22 +112,25 @@ angular.module('springInitiativeApp')
       return $http.delete('/api/schema/' + id);
     }
 
-    // Action Step Related
-    dataFactory.addActionStep = function(description, scopeActiveStudents ) {
+    /**************************
+        Action Step Related
+    **************************/
+    dataFactory.addActionStep = function(description, scopeActiveItems ) {
       var data = {
         description: description,
-        studentIDs: _.map(scopeActiveStudents, '_id')
+        entityIDs: _.map(scopeActiveItems, '_id')
       }
+      console.log(data);
       return $http.post('/api/action-steps', data);
     }
 
-    dataFactory.getActionSteps = function(activeStudents, startDate, endDate) {
+    dataFactory.getActionSteps = function(activeItems, startDate, endDate) {
       var today = new Date();
       startDate = startDate || moment().subtract(29, 'days')._d;
       endDate = endDate || moment()._d;
 
-      var studentIDs = _.map(activeStudents, '_id').join(',');
-      var URL = '/api/action-steps?studentIDs=' + studentIDs
+      var IDs = _.map(activeItems, '_id').join(',');
+      var URL = '/api/action-steps?IDs=' + IDs;
       URL += '&startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
 
       return $http.get(URL);
@@ -137,7 +149,41 @@ angular.module('springInitiativeApp')
     }
 
     dataFactory.setActionSteps = function(actionSteps) {
+      dataFactory.actionSteps = actionSteps;
       $rootScope.$broadcast('actionSteps', actionSteps);
+    }
+
+    /**************************
+          Cohort Related
+    **************************/
+    dataFactory.toggleCohort = function(cohort) {
+      dataFactory.activeStudents = [];
+      
+      dataFactory.activeCohort = cohort;
+      $rootScope.$broadcast('toggleCohort', dataFactory.activeCohort);
+      dataFactory.activeItems = [dataFactory.activeCohort];
+      $rootScope.$broadcast('activeItems', dataFactory.activeItems);
+
+      dataFactory.getActionSteps(dataFactory.activeItems).then(function success(res) {
+        dataFactory.setActionSteps(res.data.data);
+      }, utilityService.logErr);
+    }
+
+    dataFactory.getCohort = function(_id) {
+      return $http.get('/api/cohorts/' + _id);
+    }
+
+    dataFactory.getCohorts = function() {
+      return $http.get('/api/cohorts');
+    }
+
+    dataFactory.updateCohort = function(_id, studentIDs) {
+      return $http.put('/api/cohorts/' + _id, {students: studentIDs});
+    }
+
+    dataFactory.setCohorts = function(cohorts) {
+      dataFactory.cohorts = cohorts;
+      $rootScope.$broadcast('cohorts', cohorts);
     }
 
     return dataFactory;

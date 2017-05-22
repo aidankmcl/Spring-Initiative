@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var actionStepSchema = mongoose.Schema({
   description: String,
-  studentID: String,
+  entityID: String,
   complete: Boolean,
   result: String,
 }, {strict: false});

@@ -35,7 +35,7 @@ routes.GETnote = function(req, res, next) {
 routes.GETnotes = function(req, res, next) {
   var search = {
     noteType: req.query.noteType,
-    studentID: { '$in': req.query.studentIDs.split(',') },
+    entityID: { '$in': req.query.IDs.split(',') },
     _id: {
       "$lte": objectIdWithTimestamp(req.query.endDate),
       "$gte": objectIdWithTimestamp(req.query.startDate)

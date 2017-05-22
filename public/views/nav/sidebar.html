@@ -13,12 +13,33 @@
 
   <li>
     <div class="panel-title">
+      <a data-toggle="collapse"
+        ng-click="cohortsCollapsed=!cohortsCollapsed;"
+        ng-init="cohortsCollapsed=true; studentsCollapsed=true">
+          Cohorts <i class="glyphicon" ng-class="{'glyphicon-chevron-down': cohortsCollapsed, 'glyphicon-chevron-right': !cohortsCollapsed}"></i>
+      </a>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!cohortsCollapsed">
+      <div class="panel-body">
+        <ul>
+          <li class="student-item"
+            ng-class="{active: activeCohort._id == cohort._id}"
+            ng-repeat="cohort in cohorts | orderBy:'name'">
+              <a ng-click="toggleCohort(cohort)">{{ cohort.name }}</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </li>
+
+  <li>
+    <div class="panel-title">
       <a data-toggle="collapse" ng-click="studentsCollapsed=!studentsCollapsed; archivedCollapsed=false" ng-init="studentsCollapsed=true">Current Students <i class="glyphicon" ng-class="{'glyphicon-chevron-down': studentsCollapsed, 'glyphicon-chevron-right': !studentsCollapsed}"></i></a>
     </div>
     <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!studentsCollapsed">
       <div class="panel-body">
         <ul>
-          <li class="student-item" ng-class="{active: studentIDs.indexOf(student._id) > -1}" ng-repeat="student in studentList | filter :searchbar ">
+          <li class="student-item" ng-class="{active: studentIDs.indexOf(student._id) > -1}" ng-repeat="student in studentList | filter :searchbar | orderBy:'name'">
               <a ng-click="toggleStudent(student)">{{ student.name }}</a>
               <button ng-click="deleteStudent(student._id, $index)"><i class="glyphicon glyphicon-remove"></i></button>
           </li>
@@ -34,7 +55,7 @@
     <div id="collapseTwo" class="panel-collapse collapse" uib-collapse="!archivedCollapsed">
       <div class="panel-body">
         <ul>
-          <div class="student-item" ng-repeat="student in students | filter :searchbar | filter:{archived:true}" ng-click="showStudent(student)" >
+          <div class="student-item" ng-repeat="student in students | filter :searchbar | filter:{archived:true} | orderBy:'name'" ng-click="showStudent(student)" >
             <li>
               <a ui-sref=".student.showData" ui-sref-opts="{reload: 'index.student.showData'}">{{student.name}}</a>
             </li>

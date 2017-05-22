@@ -22,7 +22,10 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
         templateUrl: 'views/index.html',
         controller: 'indexController'
       },
-      'navbar@index': { templateUrl: 'views/nav/navbar.html' },
+      'navbar@index': { 
+        templateUrl: 'views/nav/navbar.html',
+        controller: 'navbarController'
+      },
       'sidebar@index': {
         templateUrl: 'views/nav/sidebar.html',
         controller: 'sidebarController'
@@ -103,31 +106,18 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
     controller: 'vizController'
   })
 
-  /* Content views */
-  // .state('index.cohort', {
-  //   views: {
-  //     'content': {
-  //       templateUrl: 'views/content/cohort.html',
-  //       controller: 'cohortController'
-  //     }
-  //   }
-  // })
-  // .state('index.cohort.showViz', {
-  //   views: {
-  //     'cohortView@index.cohort': {
-  //       templateUrl: 'views/content/cohortViz.html',
-  //       controller: 'cohortVizController'
-  //     }
-  //   }
-  // })
-  // .state('index.cohort.showStudents', {
-  //   views: {
-  //     'cohortView@index.cohort': {
-  //       templateUrl: 'views/content/cohortStudents.html',
-  //       controller: 'cohortStudentsController'
-  //     }
-  //   }
-  // })
+  /**************************************
+  ************ Cohort Views *************
+  **************************************/
+  .state('index.cohort', {
+    url: 'cohort',
+    templateUrl: 'views/dashboard/index.html',
+  })
+  .state('index.cohort.view', {
+    url: '/:_id',
+    templateUrl: 'views/dashboard/cohorts/view.html',
+    controller: 'cohortController',
+  })
   // // Note: this state won't be viewed by itself anymore
   // .state('index.student', {
   //   views: {
@@ -153,35 +143,11 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
   //     }
   //   }
   // })
-  // .state('index.student.addEntry', {
-  //   views: {
-  //     'studentView@index.student': {
-  //       controller: 'addDailyEntryController',
-  //       templateUrl: 'views/content/dailyEntry.html'
-  //     }
-  //   }
-  // })
-  // .state('index.student.addLongEntry', {
-  //   views: {
-  //     'studentView@index.student': {
-  //       controller: 'addLongEntryController',
-  //       templateUrl: 'views/content/longTermEntry.html'
-  //     }
-  //   }
-  // })
 
   // .state('index.student.editStudent', {
   //   views: {
   //     'studentView@index.student': {
   //       templateUrl: 'views/content/editStudentInfo.html'
-  //     }
-  //   }
-  // })
-  // .state('index.addStudent', {
-  //   views: {
-  //     'content': {
-  //       templateUrl: 'views/content/addStudent.html',
-  //       controller: 'addStudentController'
   //     }
   //   }
   // })

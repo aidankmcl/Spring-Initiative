@@ -1,0 +1,26 @@
+<div class="row margin-bottom-md">
+	<div class="col-xs-12">
+		<h1>{{ cohort.name }}</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-6">
+		<h2>Students</h2>
+		<input ng-model="allStudentSearch" placeholder="Search students" class="margin-bottom-md form-control" type="text" name="search">
+		<ul class="student-list">
+			<li ng-click="student.chosen = true"
+				ng-repeat="student in studentList | filter:allStudentSearch | filter:{chosen:false} | orderBy:'name'">{{ student.name }}</li>
+		</ul>
+	</div>
+	<div class="col-xs-6">
+		<h2>Students in Cohort</h2>
+		<input ng-model="cohortStudentSearch" placeholder="Search students" class="margin-bottom-md form-control" type="text" name="search">
+		<ul class="student-list">
+			<li ng-click="student.chosen = false"
+				ng-repeat="student in studentList | filter:cohortStudentSearch | filter:{chosen:true} | orderBy:'name'">{{ student.name }}</li>
+		</ul>
+	</div>
+	<div class="col-xs-12">
+		<button ng-click="saveChanges()" class="margin-top-sm form-control">Save</button>
+	</div>
+</div>
