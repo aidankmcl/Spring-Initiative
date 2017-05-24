@@ -83,8 +83,13 @@ angular.module('springInitiativeApp')
       }
       $scope.refreshSchemas();
 
-      $scope.selectOption = function(question, answer) {
-        $scope.editNote[question.key] = answer;
+      $scope.selectOption = function(event, question, answer) {
+        if ($scope.editNote[question.key] === answer) {
+          event.target.checked = false;
+          $scope.editNote[question.key] = undefined;
+        } else {
+          $scope.editNote[question.key] = answer;
+        }
       }
 
       $scope.addAttachment = function(attachment) {

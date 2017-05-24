@@ -36,28 +36,28 @@
                   ng-model="editNote[question.key]" 
                   placeholder="Type information here..."></textarea>
             </div>
-            <div class="stars" ng-switch-when="stars">
+            <div id="{{ question._id }}" class="stars" ng-switch-when="stars">
               <label>{{ question.name }}</label><br>
               <div class="star-input">
-                <input ng-click="selectOption(question, 5)" class="star star-5" id="{{ question.key }}-star-5" type="radio" name="{{ question.key }}-star"/>
+                <input ng-click="selectOption($event, question, 5)" class="star star-5" id="{{ question.key }}-star-5" type="radio" name="{{ question.key }}-star"/>
                 <label class="star star-5" for="{{ question.key }}-star-5"></label>
-                <input ng-click="selectOption(question, 4)" class="star star-4" id="{{ question.key }}-star-4" type="radio" name="{{ question.key }}-star"/>
+                <input ng-click="selectOption($event, question, 4)" class="star star-4" id="{{ question.key }}-star-4" type="radio" name="{{ question.key }}-star"/>
                 <label class="star star-4" for="{{ question.key }}-star-4"></label>
-                <input ng-click="selectOption(question, 3)" class="star star-3" id="{{ question.key }}-star-3" type="radio" name="{{ question.key }}-star"/>
+                <input ng-click="selectOption($event, question, 3)" class="star star-3" id="{{ question.key }}-star-3" type="radio" name="{{ question.key }}-star"/>
                 <label class="star star-3" for="{{ question.key }}-star-3"></label>
-                <input ng-click="selectOption(question, 2)" class="star star-2" id="{{ question.key }}-star-2" type="radio" name="{{ question.key }}-star"/>
+                <input ng-click="selectOption($event, question, 2)" class="star star-2" id="{{ question.key }}-star-2" type="radio" name="{{ question.key }}-star"/>
                 <label class="star star-2" for="{{ question.key }}-star-2"></label>
-                <input ng-click="selectOption(question, 1)" class="star star-1" id="{{ question.key }}-star-1" type="radio" name="{{ question.key }}-star"/>
+                <input ng-click="selectOption($event, question, 1)" class="star star-1" id="{{ question.key }}-star-1" type="radio" name="{{ question.key }}-star"/>
                 <label class="star star-1" for="{{ question.key }}-star-1"></label>
               </div>
             </div>
-            <div class="choice" ng-switch-when="radio">
+            <div id="{{ question._id }}" class="choice" ng-switch-when="radio">
               <strong>{{ question.name }}</strong><br>
               <span ng-repeat="answer in question.answers">
-                <label><input type="{{ question.input }}" name="{{ question.key }}" ng-click="selectOption(question, answer)">{{ answer }}</label>
+                <label><input type="radio" name="{{ question.key }}" ng-click="selectOption($event, question, answer)">{{ answer }}</label>
               </span>
             </div>
-            <div ng-switch-default>
+            <div id="{{ question._id }}" ng-switch-default>
               <label>{{ question.name }}<br>
               <input class="form-control" ng-model="editNote[question.key]" type="{{ question.input }}" placeholder="{{ question.input }}"></label>
             </div>
