@@ -10,9 +10,8 @@ angular.module('springInitiativeApp')
     	if ($stateParams._id) {
     		dataFactory.getCohort($stateParams._id).then(function (res) {
 					$scope.cohort = res.data.data;
-					console.log(res.data.data);
 
-					for (var i=0; i<$scope.studentList.length; i++) {
+    			for (var i=0; i<$scope.studentList.length; i++) {
 		  			$scope.studentList[i].chosen = ($scope.cohort.students.indexOf($scope.studentList[i]._id) > -1) ? true : false;
 		  		}
     		}, utilityService.logErr)
@@ -29,6 +28,11 @@ angular.module('springInitiativeApp')
 	  			$scope.studentList[i].chosen = ($scope.cohort.students.indexOf($scope.studentList[i]._id) > -1) ? true : false;
 	  		}
     	});
+
+        $scope.clearSearch = function() {
+            $scope.allStudentSearch = '';
+            $scope.cohortStudentSearch = '';
+        }
 
     	$scope.saveChanges = function() {
     		var studentIDs = _.chain($scope.studentList).filter({chosen: true}).map('_id').value();

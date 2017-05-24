@@ -8,7 +8,7 @@
 		<h2>Students</h2>
 		<input ng-model="allStudentSearch" placeholder="Search students" class="margin-bottom-md form-control" type="text" name="search">
 		<ul class="student-list">
-			<li ng-click="student.chosen = true"
+			<li ng-click="student.chosen = true; clearSearch()"
 				ng-repeat="student in studentList | filter:allStudentSearch | filter:{chosen:false} | orderBy:'name'">{{ student.name }}</li>
 		</ul>
 	</div>
@@ -16,7 +16,7 @@
 		<h2>Students in Cohort</h2>
 		<input ng-model="cohortStudentSearch" placeholder="Search students" class="margin-bottom-md form-control" type="text" name="search">
 		<ul class="student-list">
-			<li ng-click="student.chosen = false"
+			<li ng-click="student.chosen = false; clearSearch();"
 				ng-repeat="student in studentList | filter:cohortStudentSearch | filter:{chosen:true} | orderBy:'name'">{{ student.name }}</li>
 		</ul>
 	</div>
