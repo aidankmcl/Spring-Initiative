@@ -69,6 +69,10 @@ angular.module('springInitiativeApp')
       return $http.post('/api/notes/add', angular.toJson(note));
     }
 
+    dataFactory.updateNote = function(note) {
+      return $http.put('/api/notes/' + note._id, note);
+    }
+
     dataFactory.getNote = function(id) {
       return $http.get('/api/notes/' + id);
     }

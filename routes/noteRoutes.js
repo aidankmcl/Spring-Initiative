@@ -52,8 +52,11 @@ routes.GETnotes = function(req, res, next) {
   }).lean();
 }
 
-routes.POSTeditNote = function(req, res, next) {
-  res.json({msg: "you're good!"})
+routes.PUTupdateNote = function(req, res, next) {
+  Notes.update({_id: req.body._id}, req.body, function(err, note) {
+    if (err) return logErr(err, res);
+    res.json(note);
+  });
 }
 
 module.exports = routes;

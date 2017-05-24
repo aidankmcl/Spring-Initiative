@@ -65,6 +65,11 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
     templateUrl: 'views/dashboard/notes/view.html',
     controller: 'noteController',
   })
+  .state('index.dashboard.updateNote', {
+    url: '/notes/:note_id/update',
+    templateUrl: 'views/dashboard/notes/update.html',
+    controller: 'noteController',
+  })
 
   // Student Views
   .state('index.dashboard.addStudent', {

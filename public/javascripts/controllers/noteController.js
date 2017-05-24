@@ -20,6 +20,8 @@ angular.module('springInitiativeApp')
       if ($scope.showNoteID) {
         dataFactory.getNote($scope.showNoteID).then(function(res) {
           $scope.showNote = res.data[0];
+          $scope.showNote.date = utilityService.getDate($scope.showNote);
+          $scope.editNote = $scope.showNote;
         }, utilityService.logErr);
       }
 
@@ -83,10 +85,9 @@ angular.module('springInitiativeApp')
       }
       $scope.refreshSchemas();
 
-      $scope.selectOption = function(event, question, answer) {
+      $scope.selectOption = function(question, answer) {
         if ($scope.editNote[question.key] === answer) {
-          event.target.checked = false;
-          $scope.editNote[question.key] = undefined;
+          $scope.editNote[question.key] = '';
         } else {
           $scope.editNote[question.key] = answer;
         }
@@ -100,6 +101,7 @@ angular.module('springInitiativeApp')
       $scope.createNote = function(item, entityID, activeSchema) {
         item.date = new Date(item.date).getTime();
         dataFactory.addNote(item, entityID, activeSchema.name).then(function success(res) {
+          alert("Note Created Successfully!");
           $state.go('index.dashboard.viewStudent', {entityID: entityID, activeSchema: $scope.activeSchema});
           $scope.refreshNotes();
         }, utilityService.logErr);
@@ -111,6 +113,14 @@ angular.module('springInitiativeApp')
         dataFactory.getNotes(activeStudents, noteType, startDate, endDate).then(function success(res) {
           $scope.notes[noteType] = res.data.data;
           $scope.noteFields[noteType] = res.data.noteFields;
+        }, utilityService.logErr);
+      }
+
+      $scope.updateNote = function(editedNote) {
+        dataFactory.updateNote(editedNote).then(function success(res) {
+          alert("Note Updated Successfully!");
+          $state.go('index.dashboard.viewStudent', {entityID: editedNote.entityID, activeSchema: $scope.activeSchema});
+          $scope.refreshNotes();
         }, utilityService.logErr);
       }
 

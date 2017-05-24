@@ -1,7 +1,12 @@
 <div class="row">
   <back>Back</back>
   <div id="content-title" class="content">
-    <h1>Note</h1>
+    <h1>
+      {{ showNote.noteType }} 
+      <span class="ng-cloak" ng-show="showNote.date"> - {{ showNote.date | date }}</span>
+      <span class="ng-cloak" ng-hide="showNote.date"> - {{ showNote._id | mongoDate | date }}</span>
+      <button class="pull-right" ui-sref="index.dashboard.updateNote({note_id: showNote._id})">Update</button>
+    </h1>
   </div>
 </div>
 

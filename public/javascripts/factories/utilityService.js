@@ -10,6 +10,17 @@ angular.module('springInitiativeApp')
       return -1;
     }
 
+    utilityService.mongoDate = function(objectID) {
+      var timehex = objectID.slice(0,8);
+      var secondsSinceEpoch = parseInt(timehex, 16);
+      return dt = new Date(secondsSinceEpoch*1000);
+    };
+
+    utilityService.getDate = function(item) {
+      var date = (item.date) ? moment(item.date) : moment(utilityService.mongoDate(item._id));
+      return date.format('MM/DD/YYYY');
+    }
+
     utilityService.getObject = function(array, attr, value) {
       return array[utilityService.findWithAttr(array, attr, value)];
     }

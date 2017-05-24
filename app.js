@@ -58,9 +58,9 @@ app.post('/api/register', index.POSTregister);
 
 var noteRoutes = require(path.join(__dirname, './routes/noteRoutes'));
 app.get('/api/notes', noteRoutes.GETnotes);
-app.get('/api/notes/:_id', noteRoutes.GETnote);
 app.post('/api/notes/add', noteRoutes.POSTnote);
-app.post('/api/notes/edit', noteRoutes.POSTeditNote);
+app.get('/api/notes/:_id', noteRoutes.GETnote);
+app.put('/api/notes/:_id', noteRoutes.PUTupdateNote);
 
 var schemaRoutes = require(path.join(__dirname, './routes/schemaRoutes'));
 app.post('/api/schema/get', schemaRoutes.GETschema);
