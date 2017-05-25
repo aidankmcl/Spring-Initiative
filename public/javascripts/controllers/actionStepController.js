@@ -60,7 +60,8 @@ angular.module('springInitiativeApp')
 			$scope.refreshColors();
 
 			$scope.createActionStep = function() {
-				dataFactory.addActionStep($scope.description, $scope.activeItems).then(function success(res) {
+				var dueDate = new Date($scope.dueDate).getTime();
+				dataFactory.addActionStep(dueDate, $scope.description, $scope.activeItems).then(function success(res) {
 					$state.go('index.dashboard.listActionSteps');
 					Array.prototype.push.apply($scope.actionSteps, res.data.data);
 					dataFactory.setActionSteps($scope.actionSteps);

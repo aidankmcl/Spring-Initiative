@@ -3,17 +3,26 @@
   <div id="content-title" class="content">
     <h1>
       Action Step
-      <span class="student">Student: {{ showStep.name }}</span>
+      <span class="student">Student: {{ group.name }}</span>
     </h1>
   </div>
 </div>
 
 <div class="row">
-  <form id="update-step" novalidate>
-    <label for="description">Description</label>
-    <p id="description">{{ showStep.description }}</p>
-    <label><input type="checkbox" ng-model="showStep.complete"> Complete</label>
-    <textarea ng-model="showStep.result" placeholder="Results of action step..."></textarea>
+  <form id="update-step" class="col-xs-12" novalidate>
+    <div class="row margin-bottom-sm">
+      <label for="due-date">Due Date</label><br>
+      <datepicker ng-model="showStep.due" start="showStep.due" id="due-date"></datepicker>
+    </div>
+    <div class="row">
+      <label for="description">Action Step Description</label><br>
+      <textarea id="description" ng-model="showStep.description" placeholder="Description of action step..."></textarea>
+    </div>
+    <label class="row"><input type="checkbox" ng-model="showStep.complete"> Complete</label>
+    <div class="row margin-bottom-sm">
+      <label for="result">Results of Action Step</label><br>
+      <textarea id="result" ng-model="showStep.result" placeholder="Results of action step..."></textarea>
+    </div>
     <button class="form-control" ng-click="updateActionStep()">Save</button>
   </form>
 </div>

@@ -1,7 +1,14 @@
 <back>Back</back>
 <h1>Add Action Step</h1>
 <form id="action-step-form" novalidate>
-	<textarea ng-model="description" name="description" form="action-step-form" placeholder="Description of Action Step..."></textarea>
+	<div class="margin-bottom-md">
+		<label for="due-date">Due Date</label><br>
+		<datepicker ng-model="dueDate" id="due-date"></datepicker>
+	</div>
+	<div class="margin-bottom-sm">
+		<label for="description">Action Step Description</label>
+		<textarea id="description" ng-model="description" name="description" form="action-step-form" placeholder="Description of Action Step..."></textarea>
+	</div>
 	<div class="students" ng-if="activeItems.length > 0">
 	  	<p>Group</p>
 	  	<ul class="note-types">

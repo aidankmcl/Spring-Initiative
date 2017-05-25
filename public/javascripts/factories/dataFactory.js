@@ -119,12 +119,12 @@ angular.module('springInitiativeApp')
     /**************************
         Action Step Related
     **************************/
-    dataFactory.addActionStep = function(description, scopeActiveItems ) {
+    dataFactory.addActionStep = function(dueDate, description, scopeActiveItems) {
       var data = {
+        due: dueDate,
         description: description,
         entityIDs: _.map(scopeActiveItems, '_id')
       }
-      console.log(data);
       return $http.post('/api/action-steps', data);
     }
 
@@ -145,7 +145,9 @@ angular.module('springInitiativeApp')
     }
 
     dataFactory.updateActionStep = function(scopeStep) {
-      var data = { 
+      var data = {
+        due: new Date(scopeStep.due).getTime(),
+        description: scopeStep.description,
         complete: scopeStep.complete,
         result: scopeStep.result
       }

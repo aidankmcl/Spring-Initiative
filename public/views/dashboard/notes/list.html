@@ -3,7 +3,22 @@
     <div id="content-title" class="content">
       <h1 class="inline-block">Notes</h1>
       <daterange updateFn="getNotes"></daterange>
-      <button class="action-step-nav" ui-sref="index.dashboard.listActionSteps">{{ activeSteps.length }} Action Step{{ (activeSteps.length != 1 ) ? 's' : '' }}</button>
+      <div class="action-steps-notifications" ng-if="activeSteps.length">
+        <label for="action-step-list">Action Steps</label>
+        <button ng-click="stepsVisible = !stepsVisible">
+          <span ng-if="stepsVisible">Hide</span><span ng-if="!stepsVisible">Show</span>
+        </button>
+        <ul id="action-step-list" ng-init="stepsVisible = true">
+          <li ng-repeat="step in activeSteps | orderBy:'due'"
+            ng-if="stepsVisible"
+            ng-class="{danger: step.due && step.due - now < 86400000, warning: step.due && step.due - now < 172800000}">
+            <a ui-sref="index.dashboard.viewActionStep({ step_id: step._id })">{{ step.description | truncate:30 }}</a>
+          </li>
+          <li ng-if="activeSteps.length > 1">
+            <a ui-sref="index.dashboard.listActionSteps"><strong>See all Action Steps</strong></a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="col-xs-12">

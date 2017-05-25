@@ -12,6 +12,7 @@ angular.module('springInitiativeApp')
       $scope.noteFields = {};
       $scope.colorScheme = {};
       $scope.hiddenFields = ["noteType", "studentID", "entityID", "_id", "__v", "created", "date", "attachments"];
+      $scope.now = new Date().getTime();
       $scope.editNote = {
         attachments: []
       };

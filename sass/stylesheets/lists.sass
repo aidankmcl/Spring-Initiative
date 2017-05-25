@@ -12,3 +12,34 @@ ul.student-list
 		
 		&:hover
 			background: #eaeaea
+
+div.action-steps-notifications
+	position: absolute
+	right: 10px
+	top: 20px
+	z-index: 999
+	button
+		box-shadow: none
+		font-weight: 700
+		position: absolute
+		top: -8px
+		right: 0
+		height: 30px
+		border: none
+	ul
+		padding-left: 0
+		li
+			list-style: none
+			background: #fff
+			&.warning
+				background: #fce8ab
+			&.danger
+				background: #fdbabb
+			&:hover
+				background: #efefef
+			a
+				display: block
+				width: 250px
+				padding: 8px 12px
+				border: 1px solid #333
+				color: #333

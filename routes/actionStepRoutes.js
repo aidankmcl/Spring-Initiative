@@ -15,6 +15,7 @@ var logErr = function(err, res) {
 routes.POSTactionStep = function(req, res, next) {
 	var actionSteps = _.map(req.body.entityIDs, function(ID) {
 		return {
+      due: req.body.due,
 			description: req.body.description,
 			entityID: ID,
       complete: false
@@ -28,7 +29,7 @@ routes.POSTactionStep = function(req, res, next) {
 }
 
 routes.GETactionStep = function(req, res, next) {
-   ActionStep.find({_id: req.params._id}, function(err, actionStep) {
+  ActionStep.find({_id: req.params._id}, function(err, actionStep) {
     if (err) return logErr(err, res);
     res.json(actionStep);
   });
@@ -54,6 +55,8 @@ routes.GETactionSteps = function(req, res, next) {
 
 routes.PUTupdateActionStep = function(req, res, next) {
   var data = { 
+    due: req.body.due,
+    description: req.body.description,
     complete: req.body.complete,
     result: req.body.result
   }

@@ -8,8 +8,8 @@ angular.module('springInitiativeApp')
       },
       link: function(scope, element, attribute) {
         scope.$watch('start', function(newValue, oldValue) {
-          cb(newValue);
-        })
+          if (newValue) cb(moment(newValue).format('MM/DD/YYYY'));
+        });
 
         function cb(start) {
           element.value = start;
