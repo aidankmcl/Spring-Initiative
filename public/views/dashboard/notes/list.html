@@ -23,11 +23,17 @@
   </div>
   <div class="col-xs-12">
     <ul class="note-types" ng-if="activeItems.length > 0">
+      <li ng-repeat="cohort in activeCohorts"
+          ng-if="activeStudents.length === 0"
+          ng-click="setItem(cohort)"
+          class="{{ colorScheme[cohort._id] }}">
+            {{ cohort.name }}
+      </li>
       <li ng-repeat="student in activeStudents"
-          ng-click="setStudent(student)"
+          ng-click="setItem(student)"
           class="{{ colorScheme[student._id] }}">
             {{ student.name }}
-          </li>
+      </li>
     </ul>
   </div>
   <div class="col-xs-12">

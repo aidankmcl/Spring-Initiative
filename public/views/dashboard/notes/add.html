@@ -11,11 +11,18 @@
         {{ schema.name }}
     </li>
   </ul>
-  <ul class="note-types" ng-if="activeItems.length > 1">
-    <li ng-repeat="student in activeItems"
-        ng-click="setStudent(student)">
-          {{ student.name }}
-        </li>
+
+  <div ng-if="activeItems.length > 1">
+    <p>Choose who you want to write a note for:</p>
+    <ul class="note-types">
+      <li ng-repeat="item in activeItems"
+          ng-click="setItem(item)">
+            {{ item.name }}
+          </li>
+    </ul>
+  </div>
+  <ul ng-if="activeItems.length == 1" class="note-types">
+    <li>{{ activeItems[0].name }}</li>
   </ul>
 </div>
 

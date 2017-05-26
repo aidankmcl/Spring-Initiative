@@ -37,12 +37,12 @@ angular.module('springInitiativeApp')
 
       $scope.$on('toggleStudent', function(event, students) {
         $scope.activeStudents = students;
-        $scope.activeCohort = {};
+        $scope.studentIDs = _.map(students, '_id');
       });
 
-      $scope.$on('toggleCohort', function(event, cohort) {
-        $scope.activeStudents = [];
-        $scope.activeCohort = cohort;
+      $scope.$on('toggleCohort', function(event, cohorts) {
+        $scope.activeCohorts = cohorts;
+        $scope.cohortIDs = _.map(cohorts, '_id');
       });
 
       $scope.$on('activeItems', function(event, items) {
@@ -50,7 +50,7 @@ angular.module('springInitiativeApp')
         $scope.refreshNotes();
       });
 
-      $scope.setStudent = dataFactory.setStudent;
+      $scope.setItem = dataFactory.setItem;
 
       $scope.startNote = function(schema) {
         dataFactory.setSchema(schema);
@@ -60,12 +60,13 @@ angular.module('springInitiativeApp')
       $scope.refreshNotes = function() {
         if (!$scope.schemas || $scope.activeItems.length == 0) return;
 
+        var items = ($scope.activeStudents.length > 0) ? $scope.activeStudents : $scope.activeItems;
         $scope.schemas.forEach(function(schema) {
-          $scope.getNotes($scope.activeItems, schema.name, $scope.startDate, $scope.endDate);
+          $scope.getNotes(items, schema.name, $scope.startDate, $scope.endDate);
         });
 
-        for (var i=0; i<$scope.activeItems.length; i++) {
-          $scope.colorScheme[$scope.activeItems[i]._id] = "color-" + i;
+        for (var i=0; i<items.length; i++) {
+          $scope.colorScheme[items[i]._id] = "color-" + i;
         }
       }
 
@@ -108,10 +109,10 @@ angular.module('springInitiativeApp')
         }, utilityService.logErr);
       }
 
-      $scope.getNotes = function(activeStudents, noteType, startDate, endDate) {
-        if (!activeStudents || activeStudents.length < 1) return;
+      $scope.getNotes = function(activeItems, noteType, startDate, endDate) {
+        if (!activeItems || activeItems.length < 1) return;
 
-        dataFactory.getNotes(activeStudents, noteType, startDate, endDate).then(function success(res) {
+        dataFactory.getNotes(activeItems, noteType, startDate, endDate).then(function success(res) {
           $scope.notes[noteType] = res.data.data;
           $scope.noteFields[noteType] = res.data.noteFields;
         }, utilityService.logErr);

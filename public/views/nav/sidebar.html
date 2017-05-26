@@ -23,7 +23,7 @@
       <div class="panel-body">
         <ul>
           <li class="student-item"
-            ng-class="{active: activeCohort._id == cohort._id}"
+            ng-class="{active: cohortIDs.indexOf(cohort._id) > -1}"
             ng-repeat="cohort in cohorts | orderBy:'name'">
               <a ng-click="toggleCohort(cohort)">{{ cohort.name }}</a>
           </li>
@@ -39,9 +39,11 @@
     <div id="collapseOne" class="panel-collapse collapse" uib-collapse="!studentsCollapsed">
       <div class="panel-body">
         <ul>
-          <li class="student-item" ng-class="{active: studentIDs.indexOf(student._id) > -1}" ng-repeat="student in studentList | filter :searchbar | orderBy:'name'">
+          <li class="student-item"
+            ng-class="{active: studentIDs.indexOf(student._id) > -1}"
+            ng-if="cohortIDs.indexOf(student.program) > -1 || studentIDs.indexOf(student._id) > -1"
+            ng-repeat="student in studentList | filter :searchbar | orderBy:'name'">
               <a ng-click="toggleStudent(student)">{{ student.name }}</a>
-              <!-- <button ng-click="deleteStudent(student._id, $index)"><i class="glyphicon glyphicon-remove"></i></button> -->
           </li>
         </ul>
       </div>

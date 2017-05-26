@@ -2,9 +2,11 @@ angular.module('springInitiativeApp')
   .controller('actionStepController', ["$scope", "$rootScope", "$http", "$state", "$stateParams", "dataFactory", "utilityService",
     function($scope, $rootScope, $http, $state, $stateParams, dataFactory, utilityService) {
 			$scope.activeSchema = dataFactory.activeSchema;
+			$scope.studentList = dataFactory.studentList;
 			$scope.activeStudents = dataFactory.activeStudents;
 			$scope.activeItems = dataFactory.activeItems;
 			$scope.actionSteps = dataFactory.actionSteps;
+			$scope.setItem = dataFactory.setItem;
 			$scope.activeSteps = _.filter(dataFactory.actionSteps, ['complete', false]);
 
 			$scope.$on('toggleStudent', function(event, students) {
@@ -19,14 +21,16 @@ angular.module('springInitiativeApp')
 
 			$scope.$on('activeItems', function(event, items) {
 				$scope.activeItems = items;
+				$scope.refreshSteps();
 			})
 
 			$scope.$on('studentList', function(event, students) {
 				$scope.studentList = students;
+				$scope.refreshSteps();
 			});
 
 			$scope.refreshSteps = function() {
-				dataFactory.getActionSteps($scope.activeItems || dataFactory.studentList).then(function (res) {
+				dataFactory.getActionSteps($scope.activeItems).then(function (res) {
 	        dataFactory.setActionSteps(res.data.data);
 	      }, utilityService.logErr);
 			}
@@ -37,8 +41,8 @@ angular.module('springInitiativeApp')
 			if ($scope.showStepID) {
         dataFactory.getActionStep($scope.showStepID).then(function(res) {
           $scope.showStep = res.data[0];
-          if (dataFactory.activeCohort._id) {
-          	$scope.group = dataFactory.activeCohort
+          if (dataFactory.activeCohorts.length == 1) {
+          	$scope.group = dataFactory.activeCohorts[0]
           } else {
 	          dataFactory.getStudents({ _id: res.data[0].entityID }).then(function success(res) {
 	          	$scope.group = res.data.data

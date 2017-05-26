@@ -8,7 +8,7 @@ angular.module('springInitiativeApp')
     dataFactory.activeSchema = {};
     dataFactory.actionSteps = [];
     dataFactory.cohorts = [];
-    dataFactory.activeCohort = {};
+    dataFactory.activeCohorts = [];
     dataFactory.activeItems = [];
 
     /**************************
@@ -25,9 +25,8 @@ angular.module('springInitiativeApp')
         dataFactory.activeStudents.push(student);
       }
 
-      dataFactory.activeCohort = {};
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
-      dataFactory.activeItems = dataFactory.activeStudents;
+      dataFactory.activeItems = dataFactory.activeCohorts.concat(dataFactory.activeStudents);
       $rootScope.$broadcast('activeItems', dataFactory.activeItems);
 
       dataFactory.getActionSteps(dataFactory.activeItems).then(function success(res) {
@@ -40,9 +39,20 @@ angular.module('springInitiativeApp')
       $rootScope.$broadcast('studentList', students);
     }
 
-    dataFactory.setStudent = function(student) {
-      dataFactory.activeStudents = [student];
+    dataFactory.setItem = function(item) {
+      if (item.students) {
+        dataFactory.activeCohorts = [item];
+        dataFactory.activeStudents = [];
+      } else {
+        dataFactory.activeCohorts = [];
+        dataFactory.activeStudents = [item];
+      }
+
       $rootScope.$broadcast('toggleStudent', dataFactory.activeStudents);
+      $rootScope.$broadcast('toggleCohort', dataFactory.activeCohorts);
+      
+      dataFactory.activeItems = [item];
+      $rootScope.$broadcast('activeItems', dataFactory.activeItems);
     }
 
     dataFactory.addStudent = function(scopeStudent) {
@@ -133,7 +143,9 @@ angular.module('springInitiativeApp')
       startDate = startDate || moment().subtract(29, 'days')._d;
       endDate = endDate || moment()._d;
 
-      var IDs = _.map(activeItems, '_id').join(',');
+      var items = (activeItems.length > 0) ? activeItems : dataFactory.studentList;
+
+      var IDs = _.map(items, '_id').join(',');
       var URL = '/api/action-steps?IDs=' + IDs;
       URL += '&startDate=' + encodeURIComponent(startDate) + '&endDate=' + encodeURIComponent(endDate);
 
@@ -163,11 +175,18 @@ angular.module('springInitiativeApp')
           Cohort Related
     **************************/
     dataFactory.toggleCohort = function(cohort) {
-      dataFactory.activeStudents = [];
+      var cohortIndex = dataFactory.activeCohorts.findIndex(function (activeCohort) {
+        return activeCohort._id == cohort._id;
+      });
+
+      if (cohortIndex > -1) {
+        dataFactory.activeCohorts.splice(cohortIndex, 1);
+      } else {
+        dataFactory.activeCohorts.push(cohort);
+      }
       
-      dataFactory.activeCohort = cohort;
-      $rootScope.$broadcast('toggleCohort', dataFactory.activeCohort);
-      dataFactory.activeItems = [dataFactory.activeCohort];
+      $rootScope.$broadcast('toggleCohort', dataFactory.activeCohorts);
+      dataFactory.activeItems = dataFactory.activeCohorts.concat(dataFactory.activeStudents);
       $rootScope.$broadcast('activeItems', dataFactory.activeItems);
 
       dataFactory.getActionSteps(dataFactory.activeItems).then(function success(res) {

@@ -2,6 +2,7 @@
 var routes = {};
 var path = require('path');
 var Cohort = require(path.join(__dirname, '../models/cohort'));
+var Student = require(path.join(__dirname, '../models/student'));
 
 var logErr = function(err, res) {
   console.log(err);
@@ -47,10 +48,15 @@ routes.PUTupdateCohort = function(req, res, next) {
   var data = {}
   if (req.body.students) data['students'] = req.body.students;
   if (req.body.schools) data['schools'] = req.body.schools;
+  var multi = (req.body.students.length > 1) ? true : false;
 
   Cohort.update({ '_id': req.params._id }, data, function(err, cohort) {
     if (err) return logErr(err, res);
-    res.json({ message: 'Cohort updated!', data: cohort});
+    Student.update({'_id': {'$in': req.body.students}}, {'program': req.params._id}, {multi: multi}, function(err, students) {
+      if (err) return logErr(err, res);
+      console.log(req.body.students);
+      res.json({ message: 'Cohort updated!', data: cohort});
+    });
   });
 }
 

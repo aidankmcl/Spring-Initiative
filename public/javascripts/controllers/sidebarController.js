@@ -4,7 +4,7 @@ angular.module('springInitiativeApp')
       $scope.studentIDs = [];
     	$scope.studentList = dataFactory.studentList;
       $scope.cohorts = dataFactory.cohorts;
-      $scope.activeCohort = dataFactory.activeCohort;
+      $scope.activeCohorts = dataFactory.activeCohorts;
       $scope.activeStudents = dataFactory.activeStudents;
 
     	dataFactory.getStudents({}).then(function success(res) {
@@ -13,15 +13,13 @@ angular.module('springInitiativeApp')
     	}, utilityService.logErr);
 
       $scope.$on('toggleStudent', function(event, students) {
-        $scope.activeStudents = students,
-          $scope.studentIDs = students.map(function(student) { return student._id; });      
-        $scope.activeCohort = {};
+        $scope.activeStudents = students;
+        $scope.studentIDs = _.map(students, '_id');
       });
 
-      $scope.$on('toggleCohort', function(event, cohort) {
-        $scope.activeStudents = [],
-          $scope.studentIDs = [];
-        $scope.activeCohort = cohort;
+      $scope.$on('toggleCohort', function(event, cohorts) {
+        $scope.activeCohorts = cohorts;
+        $scope.cohortIDs = _.map(cohorts, '_id');
       });
 
       $scope.$on('cohorts', function(event, cohorts) {

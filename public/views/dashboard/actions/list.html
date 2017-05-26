@@ -9,6 +9,7 @@
   <div class="col-xs-12">
     <ul class="students note-types" ng-if="activeItems.length > 0">
       <li ng-repeat="item in activeItems"
+          ng-click="setItem(item)"
           class="{{ colorScheme[item._id] }}">
             {{ item.name }}
           </li>
