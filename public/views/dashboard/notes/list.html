@@ -3,7 +3,7 @@
     <div id="content-title" class="content">
       <h1 class="inline-block">Notes</h1>
       <daterange updateFn="getNotes"></daterange>
-      <div class="action-steps-notifications" ng-if="activeSteps.length">
+      <div class="action-steps-notifications" ng-if="activeSteps.length && activeItems.length">
         <label for="action-step-list">Action Steps</label>
         <button ng-click="stepsVisible = !stepsVisible">
           <span ng-if="stepsVisible">Hide</span><span ng-if="!stepsVisible">Show</span>
