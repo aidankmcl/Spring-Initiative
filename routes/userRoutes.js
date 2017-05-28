@@ -17,24 +17,23 @@ routes.POSTlogin = function(req, res, next) {
     if (!user)
       return res.status(401).send(info.message);
     req.logIn(user, function(err) {
-      if (err) {
-        return next(err);
-      }
+      if (err) return next(err);
       return res.sendStatus(200);
     });
   })(req, res, next);
 };
 
-routes.POSTlogout = function(req, res){
-  console.log("logged out")
+routes.GETlogout = function(req, res) {
   req.logout();
   res.sendStatus(200);
 };
 
 routes.POSTregister = function(req, res, next) {
-  User.register(new User({
+  User.register(
+    new User({
       email: req.body.username
-    }), req.body.password,
+    }),
+    req.body.password,
     function(err, user) {
       if (err) return res.status(403).send(err.message);
       
@@ -73,8 +72,6 @@ routes.POSTregister = function(req, res, next) {
           '\">Confirm your registration.</a>' +
           '<br>This is an automated response. Do not reply.');
         sendgrid.send(email2);
-
-        console.log("Email verification sent");
         res.sendStatus(200);
       });
     });

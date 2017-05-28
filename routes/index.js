@@ -27,7 +27,7 @@ routes.GETarchive = studentRoutes.GETarchive;
 routes.GETstudentEntries = studentRoutes.GETstudentEntries;
 
 routes.POSTlogin = userRoutes.POSTlogin;
-routes.POSTlogout = userRoutes.POSTlogout;
+routes.GETlogout = userRoutes.GETlogout;
 routes.POSTregister = userRoutes.POSTregister;
 routes.GETemailver = userRoutes.GETemailver;
 routes.GETallUsers = userRoutes.GETallUsers;

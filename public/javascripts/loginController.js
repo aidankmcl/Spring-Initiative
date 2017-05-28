@@ -9,7 +9,7 @@ var loginController = function($scope, $http, $state) {
       username: $scope.email,
       password: $scope.password
     }).then(function(response) {
-      $state.go('index');
+      $state.go('index.dashboard.listNotes');
     }, function(response) {
       var msg = response.data;
       if (msg === 'Incorrect username' || msg ===

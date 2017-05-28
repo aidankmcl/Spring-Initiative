@@ -10,7 +10,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var sassMiddleware = require('node-sass-middleware');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
+// var users = require('./routes/users');
 // requires the model with Passport-Local plugged in
 var User = require('./models/user');
 
@@ -46,14 +46,14 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/users', users);
+// app.use('/users', users);
 
 app.get('/verify', index.GETemailver);
 app.get('/user', function(req, res, next) {
   res.json({user: req.user});
 })
 app.post('/api/login', index.POSTlogin);
-app.post('/api/logout', index.POSTlogout);
+app.get('/api/logout', index.GETlogout);
 app.post('/api/register', index.POSTregister);
 
 var noteRoutes = require(path.join(__dirname, './routes/noteRoutes'));
@@ -86,26 +86,11 @@ app.get('/api/students/:_id', studentRoutes.GETstudent);
 app.delete('/api/students/:_id', studentRoutes.DELETEstudent);
 app.get('/api/students', studentRoutes.GETallStudents);
 app.post('/api/students/add', studentRoutes.POSTstudent);
-// app.get('/api/allStudents', index.GETallStudents);
-// app.get('/api/student/allEntries', index.GETallStudentEntries);
-// app.get('/api/student/:_id', index.GETstudent);
-// app.post('/api/student/add', index.POSTaddstudent);
-// app.post('/api/student/edit/:_id', index.POSTeditstudent);
-// app.delete('/api/student/:_id', index.DELETEstudent);
-// app.get('/api/index/archive', index.GETarchive);
-// app.get('/api/student/dataList/:_id', index.GETstudentEntriesList);
-// app.get('/api/student/data/:_id/:dataType', index.GETstudentEntries);
-// app.post('/api/student/newDailyEntry/:_id', index.POSTnewDailyEntry);
-// app.post('/api/student/newLongEntry/:_id', index.POSTnewLongEntry);
 
 app.get('/api/allUsers', index.GETallUsers);
 app.post('/api/changeAdmin/:_id', index.POSTchangeAdmin);
 app.post('/api/changePassword/:_id', index.POSTchangePassword);
 app.delete('/api/delUser/:_id', index.DELETEdelUser);
-// app.get('/api/cohort/data/:cohort', index.GETcohortEntries);
-// app.post('/api/editOverview/', index.POSTeditOverview);
-
-// app.get('/api/overview', index.GEToverview);
 
 app.use(function(req, res) {
   // Use res.sendfile, as it streams instead of reading the file into memory.

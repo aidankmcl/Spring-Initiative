@@ -9,14 +9,17 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
 
   $stateProvider
 
-  /* Page views */
+  /* Auth views */
   .state('login', {
     url: '/login',
     templateUrl: 'views/login.html',
     controller: 'loginController'
   })
+  
+  /* Page views */
   .state('index', {
     url: '/',
+    defaultSubstate: 'index.dashboard.listNotes',
     views: {
       '@': {
         templateUrl: 'views/index.html',
@@ -36,7 +39,7 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
   .state('index.dashboard', {
     url: 'dashboard',
     templateUrl: 'views/dashboard/index.html',
-    controller: 'indexController'
+    defaultSubstate: 'index.dashboard.listNotes'
   })
 
   /* Schema view */
@@ -172,12 +175,10 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
 springInitiative.run(function($rootScope, $state, $http) {
   $rootScope.$on('$stateChangeStart', function(event, next, current) {
     $http.get('/user').then(function(data) {
-      if (false && data.data.user == null && next.name !== 'login') {
-        console.log('No one logged in, redirecting to /login');
+      if (data.data.user == null && next.name !== 'login') {
         $state.go('login');
       } else if (data.data.user != null && next.name === 'login') {
-        console.log('Already logged in. Redirecting home.');
-        $state.go('index');
+        $state.go('index.dashboard.listNotes');
       }
     }, function(err) {
       console.log('Error: in GET \'/user\'', err);

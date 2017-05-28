@@ -12,6 +12,13 @@ angular.module('springInitiativeApp')
     dataFactory.activeItems = [];
 
     /**************************
+       Authentication Related
+    **************************/    
+    dataFactory.logout = function() {
+      return $http.get('/api/logout');
+    }
+
+    /**************************
           Student Related
     **************************/
     dataFactory.toggleStudent = function(student) {
