@@ -172,7 +172,7 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
 springInitiative.run(function($rootScope, $state, $http) {
   $rootScope.$on('$stateChangeStart', function(event, next, current) {
     $http.get('/user').then(function(data) {
-      if (next.name === 'index.settings') {
+      if (next.name === 'settings') {
 
       } else if (data.data.user == null && next.name !== 'login') {
         $state.go('login');
