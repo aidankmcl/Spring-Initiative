@@ -159,14 +159,11 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
   //     }
   //   }
   // })
-  // .state('index.settings', {
-  //   views: {
-  //     'content': {
-  //       templateUrl: 'views/content/settings.html',
-  //       controller: 'settingsController'
-  //     }
-  //   }
-  // });
+  .state('settings', {
+    url: '/password/:user_id',
+    templateUrl: 'views/content/settings.html',
+    controller: 'settingsController'
+  });
 
   $locationProvider.html5Mode(true);
 
@@ -175,7 +172,9 @@ springInitiative.config(function($stateProvider, $urlRouterProvider, $locationPr
 springInitiative.run(function($rootScope, $state, $http) {
   $rootScope.$on('$stateChangeStart', function(event, next, current) {
     $http.get('/user').then(function(data) {
-      if (data.data.user == null && next.name !== 'login') {
+      if (next.name === 'index.settings') {
+
+      } else if (data.data.user == null && next.name !== 'login') {
         $state.go('login');
       } else if (data.data.user != null && next.name === 'login') {
         $state.go('index.dashboard.listNotes');

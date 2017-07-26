@@ -1,5 +1,5 @@
-<div class="user-settings">
-  <h1>Change Admin Settings</h1>
+<div class="user-settings container">
+  <h1 class="text-center"><br>Password Reset</h1>
   <div class="user-item" ng-if="user.isAdmin" ng-repeat="username in allUsers">
     <div class="row chadmin">
       <div class="col-md-4">{{username.email}}</div>
@@ -14,11 +14,9 @@
     </div>
   </div>
 
-  <br>
-  <h2>Change Password</h2>
   <div class="change-password row">
-    <div class="col-sm-4">
-      <form role="form" name="form_change_password" class="form_change_password" ng-submit="changePassword(user)">
+    <div class="col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4 col-xs-12">
+      <form role="form" name="form_change_password" class="form_change_password" ng-submit="changePassword()">
 
         <div class='form-group'>
           <label for="chngPassword1">New password</label>
